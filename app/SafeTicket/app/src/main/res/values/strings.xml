@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SafeTicket</string>
+    <string name="title_activity_ticket">TicketActivity</string>
 </resources>
