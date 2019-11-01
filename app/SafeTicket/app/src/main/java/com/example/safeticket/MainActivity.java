@@ -9,10 +9,13 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
+    private BackPressCloseHandler bpcHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        bpcHandler = new BackPressCloseHandler(this);
 
         Button registerUserInfoButton = (Button) findViewById(R.id.registerUserInfoButton);
         registerUserInfoButton.setOnClickListener(this);
@@ -46,5 +49,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        bpcHandler.onBackPressed();
     }
 }
