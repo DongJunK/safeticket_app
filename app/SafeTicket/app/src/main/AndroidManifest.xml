@@ -15,7 +15,13 @@
             android:label="@string/title_activity_ticket"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".MainActivity"></activity>
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".SignUpActivity"/>
+        <activity android:name=".FindActivity"/>
+
+        <activity android:name=".LoginActivity"></activity>
 
         <activity
             android:name=".SplashActivity"
