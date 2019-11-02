@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">SafeTicket</string>
     <string name="title_activity_ticket">TicketActivity</string>
+    <string name="kakao_app_key">bf7d28368e922b35d6db6d3ce2ce66d9</string>
 </resources>
