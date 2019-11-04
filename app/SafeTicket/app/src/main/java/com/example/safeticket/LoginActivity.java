@@ -12,7 +12,10 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.safeticket.Interfaces.RequestToServer;
 import com.kakao.auth.ErrorCode;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
@@ -23,6 +26,8 @@ import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
 import com.kakao.util.helper.log.Logger;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.security.MessageDigest;
@@ -33,20 +38,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //유저프로필
     String token = "";
     String name = "";
-
+    TextView findIdPwdText;
+    EditText idEdit;
+    EditText pwdEdit;
+    Button signUpButton;
+    Button logInButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        TextView findIdPwdText = (TextView) findViewById(R.id.findIdPwdText);
+        idEdit = (EditText)findViewById(R.id.idEdit);
+        pwdEdit = (EditText)findViewById(R.id.pwdEdit);
+        findIdPwdText = (TextView) findViewById(R.id.findIdPwdText);
         findIdPwdText.setOnClickListener(this);
 
-        Button signUpButton = (Button) findViewById(R.id.signUpButton);
+        signUpButton = (Button) findViewById(R.id.signUpButton);
         signUpButton.setOnClickListener(this);
 
-        //Button loginButton = (Button) findViewById(R.id.loginButton);
-        //loginButton.setOnClickListener(this);
+        logInButton = (Button) findViewById(R.id.logInButton);
+        logInButton.setOnClickListener(this);
 
         callback = new SessionCallback();
         Session.getCurrentSession().addCallback(callback);
@@ -94,9 +104,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.signUpButton:
                 intent.setClass(getApplicationContext(), SignUpActivity.class);
                 break;
-//            case R.id.loginButton:
-//                intent.setClass(getApplicationContext(), MainActivity.class);
-//                break;
+            case R.id.logInButton:
+                LogInCheck(v);
+                break;
         }
         startActivity(intent);
         finish();
@@ -122,6 +132,38 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         final Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+
+    public boolean LogInCheck(View v){
+        JSONObject obj = new JSONObject();
+        RequestToServer reqToServer = new RequestToServer(); // Request to Server Class
+        JSONObject req_json = new JSONObject();
+        boolean responseMsg = false; // response Message
+
+        try {
+            req_json.put("email" , idEdit.getText().toString());
+            req_json.put("password", pwdEdit.getText().toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if (req_json.length() > 0) {
+            try {
+                //reqToserver execute / params 0 = GET OR POST / 1 = call function / 2 = request json
+                obj = new JSONObject(reqToServer.execute("POST", "users/login",String.valueOf(req_json)).get());
+                try {
+                    responseMsg = obj.getBoolean("result");
+
+                } catch (JSONException e) {
+                    System.out.println(e.toString());
+                }
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
+        }
+        return responseMsg;
     }
 
 }

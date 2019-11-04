@@ -2,42 +2,47 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/findIdPwdText"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.1">
-        <TextView
-            android:id="@+id/findIdPwdText"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:text="아이디/비밀번호 찾기"
-            android:textColor="#0000FF"
-            android:textSize="20dp"
-        ></TextView>
-    </LinearLayout>
-
-    <LinearLayout
+        android:layout_height="wrap_content"
+        android:text="아이디/비밀번호 찾기"
+        android:textColor="#0000FF"
+        android:textSize="20dp"></TextView>
+    <EditText
+        android:id="@+id/idEdit"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.3"
-        android:orientation="horizontal">
-        <Button
-            android:id = "@+id/signUpButton"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:text="회원가입"
-            ></Button>
+        android:layout_height="wrap_content"
+        android:hint="email" />
 
-    </LinearLayout>
+    <EditText
+        android:id="@+id/pwdEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="password" />
+    <Button
+        android:id="@+id/logInButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="로그인" />
+
+    <Button
+        android:id="@+id/signUpButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="회원가입"></Button>
+
+
+
     <com.kakao.usermgmt.LoginButton
         android:id="@+id/login_btn_kakaologin"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_gravity="bottom"/>
+        android:layout_gravity="bottom" />
+
+
 </LinearLayout>
