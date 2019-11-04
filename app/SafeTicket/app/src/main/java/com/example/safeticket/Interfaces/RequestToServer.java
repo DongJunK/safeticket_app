@@ -22,7 +22,11 @@ public class RequestToServer extends AsyncTask<String, String, String> {
 
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
-
+        if(method=="" || func == "" || req_json=="")
+        {
+            System.out.println("Check params method or func or req_json");
+            return null;
+        }
         try {
             URL serverUrl = new URL("http://192.168.50.177:3000/"+func);
             urlConnection = (HttpURLConnection)serverUrl.openConnection();
@@ -30,17 +34,23 @@ public class RequestToServer extends AsyncTask<String, String, String> {
             urlConnection.setConnectTimeout(5000);
             urlConnection.setRequestProperty("content-type","application/json");
             urlConnection.setRequestMethod(method);
-            urlConnection.setDoOutput(true);//Outstream으로 post 데이터를 넘겨주겠다는 의미
+            if(method=="POST"){ // method가 POST일 때
+                urlConnection.setDoOutput(true);//Outstream으로 post 데이터를 넘겨주겠다는 의미
+            }
             urlConnection.setDoInput(true);//Inputstream으로 서버로부터 응답을 받겠다는 의미
             urlConnection.connect();
 
-            //서버로 보내기위해서 스트림 만듬
-            OutputStream outStream = urlConnection.getOutputStream();
-            //버퍼를 생성하고 넣음
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream));
-            writer.write(req_json);
-            writer.flush();
-            writer.close();//버퍼를 받아줌
+            if(method=="POST")
+            {
+                //서버로 보내기위해서 스트림 만듬
+                OutputStream outStream = urlConnection.getOutputStream();
+                //버퍼를 생성하고 넣음
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream));
+                writer.write(req_json);
+                writer.flush();
+                writer.close();//버퍼를 받아줌
+            }
+
 
             //서버로 부터 데이터를 받음
             InputStream stream = urlConnection.getInputStream();
@@ -52,7 +62,7 @@ public class RequestToServer extends AsyncTask<String, String, String> {
             while((line = reader.readLine()) != null){
                 buffer.append(line);
             }
-            return buffer.toString();//서버로 부터 받은 값을 리턴해줌 아마 OK!!가 들어올것임
+            return buffer.toString();//서버로 부터 받은 값을 리턴해줌
         } catch (Exception e) {
             e.printStackTrace();
         }finally {
