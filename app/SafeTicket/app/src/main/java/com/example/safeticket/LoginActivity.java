@@ -8,9 +8,12 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
+import android.transition.Visibility;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -42,6 +45,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     EditText idEdit;
     EditText pwdEdit;
     TextView signUpButton;
+    TextView logInFailMessage;
     Button logInButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         logInButton = (Button) findViewById(R.id.logInButton);
         logInButton.setOnClickListener(this);
+
+        logInFailMessage = (TextView) findViewById(R.id.logInFailMessage);
         /*
         callback = new SessionCallback();
         Session.getCurrentSession().addCallback(callback);
@@ -104,14 +110,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.findIdPwdText:
                 break;
             case R.id.signUpButton:
-                intent.setClass(getApplicationContext(), SignUpActivity.class);
+                intent = new Intent(getApplicationContext(), SignUpActivity.class);
+                startActivity(intent);
                 break;
             case R.id.logInButton:
-                logInCheck(v);
+                // 로그인 성공시 true, 실패 false
+                boolean result = logInCheck();
+
+                if(result){
+                    intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                }else {
+                    logInFailMessage.setVisibility(View.VISIBLE);
+                    Animation anim = new AlphaAnimation(0.0f, 1.0f);  // 생성자 : 애니메이션 duration 간격 설정
+                    anim.setDuration(50); // 깜빡임 동작 시간 milliseconds
+                    anim.setStartOffset(50);  // 반복 횟수
+                    anim.setRepeatCount(1); // 시작 전 시간 간격 milliseconds
+                    logInFailMessage.startAnimation(anim); // 깜빡임 시작
+                }
                 break;
         }
-        startActivity(intent);
-        finish();
+        //startActivity(intent);
+        //finish();
     }
 
     private class SessionCallback implements ISessionCallback {
@@ -137,10 +157,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-    public boolean logInCheck(View v){
-        JSONObject obj = new JSONObject();
+    public boolean logInCheck(){
+        JSONObject res_obj;
         RequestToServer reqToServer = new RequestToServer(); // Request to Server Class
-        JSONObject req_json = new JSONObject();
+        JSONObject req_json = new JSONObject(); // req body json
         boolean responseMsg = false; // response Message
 
         try {
@@ -154,9 +174,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (req_json.length() > 0) {
             try {
                 //reqToserver execute / params 0 = GET OR POST / 1 = call function / 2 = request json
-                obj = new JSONObject(reqToServer.execute("POST", "users/login",String.valueOf(req_json)).get());
+                res_obj = new JSONObject(reqToServer.execute("POST", "users/login",String.valueOf(req_json)).get());
                 try {
-                    responseMsg = obj.getBoolean("result");
+                    responseMsg = res_obj.getBoolean("result");
 
                 } catch (JSONException e) {
                     System.out.println(e.toString());

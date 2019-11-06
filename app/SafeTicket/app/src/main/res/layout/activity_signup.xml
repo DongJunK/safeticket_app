@@ -27,7 +27,7 @@
             android:layout_weight="1" />
 
         <TextView
-            android:id="@+id/findIdPwdText"
+            android:id="@+id/idCreateMsgText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -35,6 +35,7 @@
             android:lineSpacingExtra="6sp"
             android:textColor="#1f2021"
             android:textSize="18sp"
+            android:visibility="invisible"
             android:text="이미 계정이 있습니다" />
     </LinearLayout>
     <ScrollView
@@ -75,7 +76,7 @@
                 android:background="@drawable/textbox"
                 android:hint="이메일 주소를 입력해주세요"
                 android:textSize="16sp"
-                android:inputType="textMultiLine|textNoSuggestions" />
+                android:inputType="textNoSuggestions" />
 
             <Button
                 android:id="@+id/idExistCheckButton"
@@ -110,7 +111,7 @@
                 android:background="@drawable/textbox"
                 android:textSize="16sp"
                 android:hint="비밀번호를 입력해주세요"
-                android:inputType="textMultiLine|textNoSuggestions" />
+                android:inputType="textPassword" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -133,7 +134,18 @@
                 android:background="@drawable/textbox"
                 android:textSize="16sp"
                 android:hint="비밀번호를 입력해주세요"
-                android:inputType="textMultiLine|textNoSuggestions" />
+                android:inputType="textPassword" />
+            <TextView
+                android:id="@+id/pwdErrorMsgText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:lineSpacingExtra="0sp"
+                android:textColor="#ff0000"
+                android:textSize="12sp"
+                android:visibility="gone"
+                android:text="비밀번호가 일치하지 않습니다" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -156,7 +168,7 @@
                 android:background="@drawable/textbox"
                 android:textSize="16sp"
                 android:hint="이름을 입력해주세요"
-                android:inputType="textMultiLine|textNoSuggestions" />
+                android:inputType="textNoSuggestions" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -179,7 +191,7 @@
                 android:background="@drawable/textbox"
                 android:textSize="16sp"
                 android:hint="휴대폰번호를 입력해주세요"
-                android:inputType="textMultiLine|textNoSuggestions" />
+                android:inputType="textNoSuggestions" />
 
             <Button
                 android:id="@+id/signUpButton"

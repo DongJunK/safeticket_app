@@ -17,8 +17,8 @@ public class RequestToServer extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... params) {
         String method = params[0].toUpperCase(); // GET or POST
-        String func = params[1];
-        String req_json = params[2];
+        String func = params[1]; // rest api 호출 경로
+        String req_json = params[2]; // 요청 json
 
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;

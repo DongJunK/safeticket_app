@@ -71,7 +71,7 @@
                 android:background="@drawable/textbox"
                 android:textSize="16sp"
                 android:hint="이메일 주소를 입력해주세요"
-                android:inputType="textMultiLine|textNoSuggestions"
+                android:inputType="textNoSuggestions"
                 android:paddingLeft="10dp" />
 
             <TextView
@@ -93,21 +93,36 @@
                 android:layout_marginRight="20dp"
                 android:background="@drawable/textbox"
                 android:textSize="16sp"
-                android:hint="비밀번호를 입력해주세요"
-                android:inputType="textMultiLine|textNoSuggestions"
-                android:paddingLeft="10dp" />
 
-            <TextView
-                android:id="@+id/signUpButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="250dp"
-                android:layout_marginTop="30dp"
-                android:clickable="true"
-                android:lineSpacingExtra="6sp"
-                android:text="아직 회원이 아니신가요?"
-                android:textColor="#1f2021"
-                android:textSize="13sp" />
+                android:hint="비밀번호를 입력해주세요"
+                android:inputType="textPassword"
+                android:paddingLeft="10dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/logInFailMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textColor="#FF0000"
+                    android:text="아직 가입하지 않은 사용자이거나,\n비밀번호가 맞지 않습니다."
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="invisible"/>
+                <TextView
+                    android:id="@+id/signUpButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginTop="10dp"
+                    android:clickable="true"
+                    android:lineSpacingExtra="6sp"
+                    android:text="아직 회원이 아니신가요?"
+                    android:textColor="#1f2021"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
 
             <Button
                 android:id="@+id/logInButton"
