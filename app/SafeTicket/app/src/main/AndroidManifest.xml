@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActionBar">
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
@@ -21,20 +21,29 @@
 
         <activity
             android:name=".TicketActivity"
-            android:label="@string/title_activity_ticket"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_ticket" />
 
         <activity
 
-            android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".SignUpActivity"/>
-        <activity android:name=".FindActivity"/>
-        <activity android:name=".LoginActivity"/>
+            android:name=".MainActivity"/>
 
-        <activity android:name=".ReadQrCodeActivity"/>
-        <activity android:name=".UserActivity"/>
-        <activity android:name=".UserInfoActivity"></activity>
+        <activity
+            android:name=".SignUpActivity" />
+
+        <activity
+            android:name=".FindActivity"/>
+
+        <activity
+            android:name=".LoginActivity"/>
+
+        <activity
+            android:name=".ReadQrCodeActivity"/>
+
+        <activity
+            android:name=".UserActivity"/>
+
+        <activity
+            android:name=".UserInfoActivity"></activity>
 
         <activity
             android:name=".SplashActivity"

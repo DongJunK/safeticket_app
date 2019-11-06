@@ -1,48 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/findIdPwdText"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="아이디/비밀번호 찾기"
-        android:textColor="#0000FF"
-        android:textSize="20dp"></TextView>
-    <EditText
-        android:id="@+id/idEdit"
+        android:layout_height="80dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="32dp"
+            android:background="@android:color/transparent"
+            android:focusableInTouchMode="true"
+            android:src="@drawable/back_button" />
+
+        <TextView
+            android:id="@+id/findIdPwdText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="240dp"
+            android:layout_marginTop="36dp"
+            android:text="비밀번호 찾기"
+            android:textColor="#1f2021"
+            android:textSize="15sp"/>
+    </LinearLayout>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="email" />
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/pwdEdit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="password" />
-    <Button
-        android:id="@+id/logInButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="로그인" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/signUpButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="회원가입"></Button>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:lineSpacingExtra="12sp"
+                android:text="이메일로 로그인"
+                android:textColor="#1f2021"
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:lineSpacingExtra="0sp"
+                android:text="이메일"
+                android:textColor="#babdbf"
+                android:textSize="16sp" />
 
+            <EditText
+                android:id="@+id/idEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/textbox"
+                android:textSize="16sp"
+                android:hint="이메일 주소를 입력해주세요"
+                android:inputType="textMultiLine|textNoSuggestions"
+                android:paddingLeft="10dp" />
 
-    <com.kakao.usermgmt.LoginButton
-        android:id="@+id/login_btn_kakaologin"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="bottom" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:lineSpacingExtra="0sp"
+                android:text="비밀번호"
+                android:textColor="#babdbf"
+                android:textSize="16sp" />
 
+            <EditText
+                android:id="@+id/pwdEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/textbox"
+                android:textSize="16sp"
+                android:hint="비밀번호를 입력해주세요"
+                android:inputType="textMultiLine|textNoSuggestions"
+                android:paddingLeft="10dp" />
 
+            <TextView
+                android:id="@+id/signUpButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="250dp"
+                android:layout_marginTop="30dp"
+                android:clickable="true"
+                android:lineSpacingExtra="6sp"
+                android:text="아직 회원이 아니신가요?"
+                android:textColor="#1f2021"
+                android:textSize="13sp" />
+
+            <Button
+                android:id="@+id/logInButton"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/button_purple"
+                android:gravity="center_horizontal|center_vertical"
+                android:lineSpacingExtra="0sp"
+                android:text="로그인"
+                android:textColor="#ffffff"
+                android:textSize="17sp" />
+
+            <com.kakao.usermgmt.LoginButton
+                android:id="@+id/login_btn_kakaologin"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+
+                android:layout_marginRight="20dp" />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

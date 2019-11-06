@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     TextView findIdPwdText;
     EditText idEdit;
     EditText pwdEdit;
-    Button signUpButton;
+    TextView signUpButton;
     Button logInButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,17 +52,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         findIdPwdText = (TextView) findViewById(R.id.findIdPwdText);
         findIdPwdText.setOnClickListener(this);
 
-        signUpButton = (Button) findViewById(R.id.signUpButton);
+        signUpButton = (TextView) findViewById(R.id.signUpButton);
         signUpButton.setOnClickListener(this);
 
         logInButton = (Button) findViewById(R.id.logInButton);
         logInButton.setOnClickListener(this);
-
+        /*
         callback = new SessionCallback();
         Session.getCurrentSession().addCallback(callback);
         Session.getCurrentSession().checkAndImplicitOpen();
 
         getAppKeyHash();
+
+         */
     }
 
     private void getAppKeyHash() {
@@ -105,7 +107,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 intent.setClass(getApplicationContext(), SignUpActivity.class);
                 break;
             case R.id.logInButton:
-                LogInCheck(v);
+                logInCheck(v);
                 break;
         }
         startActivity(intent);
@@ -135,7 +137,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-    public boolean LogInCheck(View v){
+    public boolean logInCheck(View v){
         JSONObject obj = new JSONObject();
         RequestToServer reqToServer = new RequestToServer(); // Request to Server Class
         JSONObject req_json = new JSONObject();

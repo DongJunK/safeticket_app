@@ -7,9 +7,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.safeticket.Interfaces.RequestToServer;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private BackPressCloseHandler bpcHandler;
+    private String attendeeId = "owen1994";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,5 +61,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onBackPressed() {
         bpcHandler.onBackPressed();
+    }
+
+    public JSONArray getTicketList(View v){
+        JSONObject obj = new JSONObject();
+        RequestToServer reqToServer = new RequestToServer(); // Request to Server Class
+        JSONObject req_json = new JSONObject();
+        JSONArray responseMsg; // response JSON
+
+        try {
+            req_json.put("attendee_id" , attendeeId);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if (req_json.length() > 0) {
+            try {
+                //reqToserver execute / params 0 = GET OR POST / 1 = call function / 2 = request json
+                obj = new JSONObject(reqToServer.execute("GET", "ticket/list",String.valueOf(req_json)).get());
+                try {
+                    responseMsg = obj.getJSONArray("list");
+                    return responseMsg;
+
+                } catch (JSONException e) {
+                    System.out.println(e.toString());
+                }
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
+        }
+        return null;
     }
 }
