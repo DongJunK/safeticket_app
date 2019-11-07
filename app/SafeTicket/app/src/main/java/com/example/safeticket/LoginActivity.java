@@ -19,15 +19,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.safeticket.Interfaces.RequestToServer;
-import com.kakao.auth.ErrorCode;
-import com.kakao.auth.ISessionCallback;
-import com.kakao.auth.Session;
-import com.kakao.network.ErrorResult;
-import com.kakao.usermgmt.UserManagement;
-import com.kakao.usermgmt.callback.MeResponseCallback;
-import com.kakao.usermgmt.response.model.UserProfile;
-import com.kakao.util.exception.KakaoException;
-import com.kakao.util.helper.log.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,14 +28,11 @@ import java.security.MessageDigest;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    private SessionCallback callback;      //콜백 선언
-    //유저프로필
-    String token = "";
-    String name = "";
-    TextView findIdPwdText;
-    EditText idEdit;
+
+    TextView findIdPwdText; // 비밀번호 찾기 버튼
+    EditText idEdit; //
     EditText pwdEdit;
-    TextView signUpButton;
+    TextView signUpText;
     TextView logInFailMessage;
     Button logInButton;
     @Override
@@ -53,65 +41,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
         idEdit = (EditText)findViewById(R.id.idEdit);
         pwdEdit = (EditText)findViewById(R.id.pwdEdit);
-        findIdPwdText = (TextView) findViewById(R.id.findIdPwdText);
-        findIdPwdText.setOnClickListener(this);
-
-        signUpButton = (TextView) findViewById(R.id.signUpButton);
-        signUpButton.setOnClickListener(this);
-
-        logInButton = (Button) findViewById(R.id.logInButton);
-        logInButton.setOnClickListener(this);
-
         logInFailMessage = (TextView) findViewById(R.id.logInFailMessage);
-        /*
-        callback = new SessionCallback();
-        Session.getCurrentSession().addCallback(callback);
-        Session.getCurrentSession().checkAndImplicitOpen();
+        findIdPwdText = (TextView) findViewById(R.id.findIdPwdText);
+        logInButton = (Button) findViewById(R.id.logInButton);
+        signUpText = (TextView) findViewById(R.id.signUpText);
 
-        getAppKeyHash();
-
-         */
+        signUpText.setOnClickListener(this);
+        logInButton.setOnClickListener(this);
+        findIdPwdText.setOnClickListener(this);
     }
 
-    private void getAppKeyHash() {
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md;
-                md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                String something = new String(Base64.encode(md.digest(), 0));
-                Log.e("Hash key", something);
-            }
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            Log.e("name not found", e.toString());
-        }
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
-            return;
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Session.getCurrentSession().removeCallback(callback);
-    }
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(getApplicationContext(), FindActivity.class);
+        Intent intent;
         switch (v.getId()){
             case R.id.findIdPwdText:
                 break;
-            case R.id.signUpButton:
+            case R.id.signUpText:
                 intent = new Intent(getApplicationContext(), SignUpActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.logInButton:
                 // 로그인 성공시 true, 실패 false
@@ -120,6 +71,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if(result){
                     intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
+                    finish();
                 }else {
                     logInFailMessage.setVisibility(View.VISIBLE);
                     Animation anim = new AlphaAnimation(0.0f, 1.0f);  // 생성자 : 애니메이션 duration 간격 설정
@@ -129,29 +81,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     logInFailMessage.startAnimation(anim); // 깜빡임 시작
                 }
                 break;
+            case R.id.backButton:
+                intent = new Intent(getApplicationContext(),SelectLoginActivity.class);
+                startActivity(intent);
+                finish();
+                break;
         }
-        //startActivity(intent);
-        //finish();
     }
-
-    private class SessionCallback implements ISessionCallback {
-        @Override
-        public void onSessionOpened() {
-            redirectSignupActivity();  // 세션 연결성공 시 redirectSignupActivity() 호출
-        }
-
-        @Override
-        public void onSessionOpenFailed(KakaoException exception) {
-            if (exception != null) {
-                Logger.e(exception);
-            }
-            setContentView(R.layout.activity_login); // 세션 연결이 실패했을때
-        }
-        // 로그인화면을 다시 불러옴
-    }
-
-    protected void redirectSignupActivity() {
-        final Intent intent = new Intent(this, MainActivity.class);
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(),SelectLoginActivity.class);
         startActivity(intent);
         finish();
     }
@@ -187,5 +126,4 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         return responseMsg;
     }
-
 }

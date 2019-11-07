@@ -23,27 +23,21 @@
             android:name=".TicketActivity"
             android:label="@string/title_activity_ticket" />
 
-        <activity
+        <activity android:name=".SelectLoginActivity"/>
 
-            android:name=".MainActivity"/>
+        <activity android:name=".MainActivity"/>
 
-        <activity
-            android:name=".SignUpActivity" />
+        <activity android:name=".SignUpActivity" />
 
-        <activity
-            android:name=".FindActivity"/>
+        <activity android:name=".FindActivity"/>
 
-        <activity
-            android:name=".LoginActivity"/>
+        <activity android:name=".LoginActivity"/>
 
-        <activity
-            android:name=".ReadQrCodeActivity"/>
+        <activity android:name=".ReadQrCodeActivity"/>
 
-        <activity
-            android:name=".UserActivity"/>
+        <activity android:name=".UserActivity"/>
 
-        <activity
-            android:name=".UserInfoActivity"></activity>
+        <activity android:name=".UserInfoActivity"></activity>
 
         <activity
             android:name=".SplashActivity"

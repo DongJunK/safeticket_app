@@ -74,7 +74,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         Intent intent;
         switch (v.getId()) {
             case R.id.backButton:
-                intent = new Intent(getApplicationContext(), LoginActivity.class);
+                intent = new Intent(getApplicationContext(), SelectLoginActivity.class);
                 startActivity(intent);
                 finish();
                 break;

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo_example"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="20dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:textColor="#9ea1a2"
+        android:lineSpacingExtra="12sp"
+        android:text="안녕하세요,"
+        android:layout_marginTop="10.6dp"
+        android:layout_marginLeft="20dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:textColor="#1f2021"
+        android:lineSpacingExtra="12sp"
+        android:text="세이프티켓에 오신걸 \n환영합니다"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:textStyle="bold"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp">
+        <TextView
+            android:id="@+id/logInFailMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="#FF0000"
+            android:text="아직 가입하지 않은 사용자이거나,\n비밀번호가 맞지 않습니다."
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:visibility="invisible"/>
+        <TextView
+            android:id="@+id/signUpText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:lineSpacingExtra="6sp"
+            android:text="아직 회원이 아니신가요?"
+            android:textColor="#1f2021"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/emailLoginButton"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textSize="17sp"
+        android:textColor="#1f2021"
+        android:background="@drawable/button_grayborder"
+        android:lineSpacingExtra="0sp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="이메일 로그인"/>
+
+    <com.kakao.usermgmt.LoginButton
+        android:id="@+id/login_btn_kakaologin"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp" />
+
+</LinearLayout>
