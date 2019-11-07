@@ -3,6 +3,7 @@ package com.example.safeticket;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -93,8 +94,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     idEdit.requestFocus();
                     break;
                 }
-                // 회원가입 가능한지 확인
+                // 회원가입 가능하면 성공
                 if(checkSingUp()){
+                    saveLoginInfo(idEdit.getText().toString(), pwdEdit.getText().toString());
                     intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                     finish();
@@ -131,8 +133,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         for(int i=0; i < str.length(); i++)
         {
             char indexChar = str.charAt(i);
-            // .이면서 2개보다 많지 않을 경우
-            if(indexChar=='.' && dotCount < 2){
+            // .이면서 3개보다 많지 않을 경우
+            if(indexChar=='.' && dotCount < 3){
                 ++dotCount;
                 continue;
             }
@@ -150,7 +152,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         // @와 .이 1개씩 없을 경우
-        if(dotCount != 1 || atCount != 1){
+        if((0<dotCount && dotCount <= 2) || atCount != 1){
             System.out.println(dotCount+" "+atCount);
             return false;
         }
@@ -255,5 +257,16 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         return true;
 
+    }
+
+    // 로그인 정보 저장
+    void saveLoginInfo(String email, String password){
+        SharedPreferences loginInfo = getSharedPreferences("loginInfo",MODE_PRIVATE);
+        SharedPreferences.Editor editor = loginInfo.edit();
+
+        editor.putString("email",email);
+        editor.putString("password",password);
+
+        editor.commit();
     }
 }

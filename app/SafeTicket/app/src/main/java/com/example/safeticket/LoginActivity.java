@@ -16,6 +16,8 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.safeticket.Interfaces.RequestToServer;
@@ -35,6 +37,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     TextView signUpText;
     TextView logInFailMessage;
     Button logInButton;
+    ImageButton backButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,10 +48,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         findIdPwdText = (TextView) findViewById(R.id.findIdPwdText);
         logInButton = (Button) findViewById(R.id.logInButton);
         signUpText = (TextView) findViewById(R.id.signUpText);
+        backButton = (ImageButton) findViewById(R.id.backButton);
 
         signUpText.setOnClickListener(this);
         logInButton.setOnClickListener(this);
         findIdPwdText.setOnClickListener(this);
+        backButton.setOnClickListener(this);
     }
 
 
@@ -66,19 +71,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.logInButton:
                 // 로그인 성공시 true, 실패 false
-                boolean result = logInCheck();
+                boolean result = logInCheck(idEdit.getText().toString(),pwdEdit.getText().toString());
 
                 if(result){
+                    // 로그인 정보 저장
+                    saveLoginInfo(idEdit.getText().toString(),pwdEdit.getText().toString());
+
+                    //메인 엑티비티로 전환
                     intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                     finish();
                 }else {
-                    logInFailMessage.setVisibility(View.VISIBLE);
-                    Animation anim = new AlphaAnimation(0.0f, 1.0f);  // 생성자 : 애니메이션 duration 간격 설정
-                    anim.setDuration(50); // 깜빡임 동작 시간 milliseconds
-                    anim.setStartOffset(50);  // 반복 횟수
-                    anim.setRepeatCount(1); // 시작 전 시간 간격 milliseconds
-                    logInFailMessage.startAnimation(anim); // 깜빡임 시작
+                    loginFailError();
                 }
                 break;
             case R.id.backButton:
@@ -96,15 +100,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-    public boolean logInCheck(){
+    public boolean logInCheck(String email, String pwd){
         JSONObject res_obj;
-        RequestToServer reqToServer = new RequestToServer(); // Request to Server Class
+        RequestToServer reqToServer = new RequestToServer(); // 서버 요청 클래스
         JSONObject req_json = new JSONObject(); // req body json
-        boolean responseMsg = false; // response Message
+        boolean responseMsg = false; // res message
 
         try {
-            req_json.put("email" , idEdit.getText().toString());
-            req_json.put("password", pwdEdit.getText().toString());
+            req_json.put("email" ,email);
+            req_json.put("password", pwd);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -125,5 +129,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         }
         return responseMsg;
+    }
+
+    //login 실패시 실패 메세지 깜빡임 출력
+    void loginFailError(){
+        logInFailMessage.setVisibility(View.VISIBLE);
+        Animation anim = new AlphaAnimation(0.0f, 1.0f);  // 생성자 : 애니메이션 duration 간격 설정
+        anim.setDuration(50); // 깜빡임 동작 시간 milliseconds
+        anim.setStartOffset(50);  // 반복 횟수
+        anim.setRepeatCount(1); // 시작 전 시간 간격 milliseconds
+        logInFailMessage.startAnimation(anim); // 깜빡임 시작
+    }
+    void saveLoginInfo(String email, String password){
+        SharedPreferences loginInfo = getSharedPreferences("loginInfo",MODE_PRIVATE);
+        SharedPreferences.Editor editor = loginInfo.edit();
+
+        editor.putString("email",email);
+        editor.putString("password",password);
+
+        editor.commit();
+
     }
 }
