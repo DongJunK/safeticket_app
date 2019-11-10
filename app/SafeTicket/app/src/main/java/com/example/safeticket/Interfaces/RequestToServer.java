@@ -27,7 +27,7 @@ public class RequestToServer extends AsyncTask<String, String, String> {
             return null;
         }
         try {
-            URL serverUrl = new URL("http://10.0.0.225:3000/"+func);
+            URL serverUrl = new URL("http://192.168.50.177:3000/"+func);
             urlConnection = (HttpURLConnection)serverUrl.openConnection();
             urlConnection.setReadTimeout(5000);
             urlConnection.setConnectTimeout(5000);

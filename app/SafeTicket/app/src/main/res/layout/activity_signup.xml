@@ -190,7 +190,7 @@
                 android:paddingLeft="10dp"
                 android:background="@drawable/textbox"
                 android:textSize="16sp"
-                android:hint="휴대폰번호를 입력해주세요"
+                android:hint="휴대폰번호를 입력해주세요( - 생략)"
                 android:inputType="textNoSuggestions" />
 
             <Button

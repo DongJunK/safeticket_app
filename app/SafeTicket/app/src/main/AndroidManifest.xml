@@ -23,7 +23,12 @@
             android:name=".TicketActivity"
             android:label="@string/title_activity_ticket" />
 
-        <activity android:name=".SelectLoginActivity"/>
+        <activity android:name=".SelectLoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity android:name=".MainActivity"/>
 
@@ -44,10 +49,7 @@
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
 
     </application>
