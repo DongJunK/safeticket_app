@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     EditText idEdit; //
     EditText pwdEdit;
     TextView signUpText;
-    TextView logInFailMessage;
+    TextView logInFailMessageText;
     Button logInButton;
     ImageButton backButton;
     @Override
@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
         idEdit = (EditText)findViewById(R.id.idEdit);
         pwdEdit = (EditText)findViewById(R.id.pwdEdit);
-        logInFailMessage = (TextView) findViewById(R.id.logInFailMessage);
+        logInFailMessageText = (TextView) findViewById(R.id.logInFailMessageText);
         findIdPwdText = (TextView) findViewById(R.id.findIdPwdText);
         logInButton = (Button) findViewById(R.id.logInButton);
         signUpText = (TextView) findViewById(R.id.signUpText);
@@ -63,6 +63,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Intent intent;
         switch (v.getId()){
             case R.id.findIdPwdText:
+                intent = new Intent(getApplicationContext(),FindActivity.class);
+                startActivity(intent);
+                finish();
                 break;
             case R.id.signUpText:
                 intent = new Intent(getApplicationContext(), SignUpActivity.class);
@@ -133,12 +136,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     //login 실패시 실패 메세지 깜빡임 출력
     void loginFailError(){
-        logInFailMessage.setVisibility(View.VISIBLE);
+        logInFailMessageText.setVisibility(View.VISIBLE);
         Animation anim = new AlphaAnimation(0.0f, 1.0f);  // 생성자 : 애니메이션 duration 간격 설정
         anim.setDuration(50); // 깜빡임 동작 시간 milliseconds
         anim.setStartOffset(50);  // 반복 횟수
         anim.setRepeatCount(1); // 시작 전 시간 간격 milliseconds
-        logInFailMessage.startAnimation(anim); // 깜빡임 시작
+        logInFailMessageText.startAnimation(anim); // 깜빡임 시작
     }
     void saveLoginInfo(String email, String password){
         SharedPreferences loginInfo = getSharedPreferences("loginInfo",MODE_PRIVATE);

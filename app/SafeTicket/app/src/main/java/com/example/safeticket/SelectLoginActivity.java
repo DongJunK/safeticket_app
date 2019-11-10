@@ -48,13 +48,15 @@ public class SelectLoginActivity extends AppCompatActivity implements View.OnCli
 
         signUpText.setOnClickListener(this);
         emailLoginButton.setOnClickListener(this);
-
+    /*
         // 자동로그인 가능하면 MainActivity로 전환
         if(checkAutoLogin()){
             Intent intent = new Intent(getApplicationContext(),MainActivity.class);
             startActivity(intent);
             finish();
         }
+     */
+
         /*
         callback = new SessionCallback();
         Session.getCurrentSession().addCallback(callback);
@@ -166,20 +168,23 @@ public class SelectLoginActivity extends AppCompatActivity implements View.OnCli
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        if (req_json.length() > 0) {
-            try {
-                //reqToserver execute / params 0 = GET OR POST / 1 = call function / 2 = request json
-                res_obj = new JSONObject(reqToServer.execute("POST", "users/login",String.valueOf(req_json)).get());
+        try {
+            if (req_json.length() > 0) {
                 try {
-                    responseMsg = res_obj.getBoolean("result");
+                    //reqToserver execute / params 0 = GET OR POST / 1 = call function / 2 = request json
+                    res_obj = new JSONObject(reqToServer.execute("POST", "users/login", String.valueOf(req_json)).get());
+                    try {
+                        responseMsg = res_obj.getBoolean("result");
 
-                } catch (JSONException e) {
+                    } catch (JSONException e) {
+                        System.out.println(e.toString());
+                    }
+                } catch (Exception e) {
                     System.out.println(e.toString());
                 }
-            } catch (Exception e) {
-                System.out.println(e.toString());
             }
+        }catch(Exception e){
+            responseMsg = false;
         }
         return responseMsg;
     }

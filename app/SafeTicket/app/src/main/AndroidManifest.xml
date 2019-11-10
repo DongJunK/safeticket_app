@@ -33,6 +33,8 @@
 
         <activity android:name=".LoginActivity"/>
 
+        <activity android:name=".ResetPasswordActivity"/>
+
         <activity android:name=".ReadQrCodeActivity"/>
 
         <activity android:name=".UserActivity"/>

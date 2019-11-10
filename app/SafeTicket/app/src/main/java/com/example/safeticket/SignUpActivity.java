@@ -152,7 +152,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         // @와 .이 1개씩 없을 경우
-        if((0<dotCount && dotCount <= 2) || atCount != 1){
+        if((dotCount < 0 && 2 <= dotCount ) || atCount != 1){
             System.out.println(dotCount+" "+atCount);
             return false;
         }
@@ -244,7 +244,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     // 비밀번호 유효성 체크
     boolean checkPwd(EditText pwd, EditText pwdCheck){
-        // 비밀번호가 동일하면 false 리턴
+        // 비밀번호가 동일하지 않으면 false 리턴
         if(!pwd.getText().toString().equals(pwdCheck.getText().toString())){
             showSuccessOrFailMsg(pwdErrorMsgText,notEquelPwdMsg,false);
             return false;
