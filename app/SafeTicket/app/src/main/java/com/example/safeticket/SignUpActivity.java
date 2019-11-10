@@ -113,14 +113,17 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             showSuccessOrFailMsg(idCreateMsgText,emailLongMsg,false);
             return false;
         }
+
         if(!checkEmailFormat(idEdit.getText().toString())){
             showSuccessOrFailMsg(idCreateMsgText,notEmailFormatMsg,false);
             return false;
         }
+
         if(!checkExistID()){
             showSuccessOrFailMsg(idCreateMsgText,existIdMsg,false);
             return false;
         }
+
         showSuccessOrFailMsg(idCreateMsgText,notExistIdMsg,true);
         return true;
     }
@@ -227,7 +230,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     // 성공 or 실패 메세지 textview 출력
     void showSuccessOrFailMsg(TextView messageText, String message, boolean success) {
+
         if(success){ // 성공 메세지
+            messageText.setVisibility(View.VISIBLE);
             messageText.setTextColor(Color.parseColor("#8ec96d"));
             messageText.setText(message);
         } else { // 실패 메세지

@@ -115,6 +115,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    // 유저 정보 수정 요청
     boolean modifiedRequest(){
         JSONObject req_json = new JSONObject();
         boolean result = false;
@@ -141,6 +142,8 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         return result;
     }
 
+
+    // 회원 탈퇴 요청
     boolean withdrawalRequest(){
         JSONObject req_json = new JSONObject();
         boolean result = false;
@@ -194,7 +197,9 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    public JSONObject postRequest(JSONObject req_json,String method){
+
+    // post 요청
+    public JSONObject postRequest(JSONObject req_json,String url){
         JSONObject res_obj;
         RequestToServer reqToServer = new RequestToServer(); // 서버 요청 클래스
         JSONObject result = null;
@@ -202,7 +207,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         if (req_json.length() > 0) {
             try {
                 //reqToserver execute / params 0 = GET OR POST / 1 = call function / 2 = request json
-                res_obj = new JSONObject(reqToServer.execute("POST", method,String.valueOf(req_json)).get());
+                res_obj = new JSONObject(reqToServer.execute("POST", url, String.valueOf(req_json)).get());
 
                 result = res_obj;
 

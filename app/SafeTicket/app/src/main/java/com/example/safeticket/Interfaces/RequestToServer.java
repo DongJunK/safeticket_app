@@ -1,6 +1,7 @@
 package com.example.safeticket.Interfaces;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -21,13 +22,14 @@ public class RequestToServer extends AsyncTask<String, String, String> {
         String req_json = params[2]; // 요청 json
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
-        if(method=="" || func == "" || req_json=="")
+        if(method=="" || func == "")
         {
-            System.out.println("Check params method or func or req_json");
+            System.out.println("Check params method or func");
             return null;
         }
         try {
             URL serverUrl = new URL("http://192.168.50.177:3000/"+func);
+            System.out.println(serverUrl);
             urlConnection = (HttpURLConnection)serverUrl.openConnection();
             urlConnection.setReadTimeout(5000);
             urlConnection.setConnectTimeout(5000);
@@ -49,7 +51,6 @@ public class RequestToServer extends AsyncTask<String, String, String> {
                 writer.flush();
                 writer.close();//버퍼를 받아줌
             }
-
 
             //서버로 부터 데이터를 받음
             InputStream stream = urlConnection.getInputStream();
