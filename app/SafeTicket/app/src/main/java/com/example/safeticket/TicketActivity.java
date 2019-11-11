@@ -1,11 +1,16 @@
 package com.example.safeticket;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import com.example.safeticket.Interfaces.RequestToServer;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -14,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -27,6 +33,7 @@ public class TicketActivity extends AppCompatActivity {
     TextView eventDateText;
     TextView eventTimeText;
     TextView venueText;
+    ImageView ticketQrCodeView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +44,10 @@ public class TicketActivity extends AppCompatActivity {
         eventDateText = (TextView) findViewById(R.id.eventDateText);
         eventTimeText = (TextView) findViewById(R.id.eventTimeText);
         venueText = (TextView) findViewById(R.id.venueText);
+        ticketQrCodeView = (ImageView) findViewById(R.id.ticketQrCodeView);
 
         setTicketInfo();
-
+        createQrCode();
 
         ImageButton backButton = (ImageButton) findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -94,5 +102,14 @@ public class TicketActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+    void createQrCode(){
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        try{
+            BitMatrix bitMatrix = multiFormatWriter.encode(tmpTicketCode, BarcodeFormat.QR_CODE,300,300);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+            ticketQrCodeView.setImageBitmap(bitmap);
+        }catch (Exception e){}
     }
 }
