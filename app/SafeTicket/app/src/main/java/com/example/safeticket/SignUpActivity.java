@@ -194,7 +194,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         return responseMsg;
     }
 
-    // 가입 가능한지 확인
+    // 회원 가입 요청
     boolean checkSingUp(){
         JSONObject res_obj; // 응답 json
         RequestToServer reqToServer = new RequestToServer(); // 서버 요청 클래스

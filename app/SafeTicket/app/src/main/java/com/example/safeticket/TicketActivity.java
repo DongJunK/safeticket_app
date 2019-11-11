@@ -1,6 +1,7 @@
 package com.example.safeticket;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
@@ -29,11 +30,14 @@ import java.sql.SQLOutput;
 
 public class TicketActivity extends AppCompatActivity {
     String tmpTicketCode = "EVN001";
+    String email;
     TextView eventNameText;
     TextView eventDateText;
     TextView eventTimeText;
     TextView venueText;
     ImageView ticketQrCodeView;
+    SharedPreferences loginInfo;
+    TextView ticketIssuerText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +49,13 @@ public class TicketActivity extends AppCompatActivity {
         eventTimeText = (TextView) findViewById(R.id.eventTimeText);
         venueText = (TextView) findViewById(R.id.venueText);
         ticketQrCodeView = (ImageView) findViewById(R.id.ticketQrCodeView);
+        ticketIssuerText = (TextView) findViewById(R.id.ticketIssuerText);
 
-        setTicketInfo();
-        createQrCode();
+        SharedPreferences loginInfo = getSharedPreferences("loginInfo",MODE_PRIVATE);
+        email = loginInfo.getString("email","");
+
+        setTicketInfo(); // Ticket info setting at TextView
+        createQrCode(); // create ticket Qr Code
 
         ImageButton backButton = (ImageButton) findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -99,10 +107,12 @@ public class TicketActivity extends AppCompatActivity {
             eventDateText.setText(ticketInfo.getString("EventDate"));
             eventTimeText.setText(ticketInfo.getString("EventTime"));
             venueText.setText(ticketInfo.getString("Venue"));
+            ticketIssuerText.setText(ticketInfo.getString("TicketIssuer"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
     void createQrCode(){
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try{

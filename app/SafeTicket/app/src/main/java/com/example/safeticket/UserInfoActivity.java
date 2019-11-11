@@ -102,7 +102,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                         finish();
                     } else {
                         // 실패 에러메세지 출력
-                        showFailMsg(errorMsgText,reqFailMsg);
+                        showFailMsg(errorMsgText,pwdFailMsg);
                     }
                 }
 
