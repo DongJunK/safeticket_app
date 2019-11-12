@@ -48,14 +48,14 @@ public class SelectLoginActivity extends AppCompatActivity implements View.OnCli
 
         signUpText.setOnClickListener(this);
         emailLoginButton.setOnClickListener(this);
-
+    /*
         // 자동로그인 가능하면 MainActivity로 전환
         if(checkAutoLogin()){
             Intent intent = new Intent(getApplicationContext(),MainActivity.class);
             startActivity(intent);
             finish();
         }
-
+    */
         /*
         callback = new SessionCallback();
         Session.getCurrentSession().addCallback(callback);

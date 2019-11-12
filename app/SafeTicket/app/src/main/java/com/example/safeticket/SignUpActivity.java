@@ -136,6 +136,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         for(int i=0; i < str.length(); i++)
         {
             char indexChar = str.charAt(i);
+
+            // 아이디 -, _ 허용
+            if(indexChar=='-' || indexChar=='_'){
+                continue;
+            }
             // .이면서 3개보다 많지 않을 경우
             if(indexChar=='.' && dotCount < 3){
                 ++dotCount;
