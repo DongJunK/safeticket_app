@@ -96,7 +96,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 // 회원가입 가능하면 성공
                 if(checkSingUp()){
-                    saveLoginInfo(idEdit.getText().toString(), pwdEdit.getText().toString());
+                    saveLoginInfo(idEdit.getText().toString(), pwdEdit.getText().toString(), nameEdit.getText().toString());
                     intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                     finish();
@@ -265,12 +265,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     // 로그인 정보 저장
-    void saveLoginInfo(String email, String password){
+    void saveLoginInfo(String email, String password, String name){
         SharedPreferences loginInfo = getSharedPreferences("loginInfo",MODE_PRIVATE);
         SharedPreferences.Editor editor = loginInfo.edit();
 
         editor.putString("email",email);
         editor.putString("password",password);
+        editor.putString("name", name);
 
         editor.commit();
     }

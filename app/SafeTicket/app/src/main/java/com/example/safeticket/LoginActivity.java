@@ -74,11 +74,38 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.logInButton:
                 // 로그인 성공시 true, 실패 false
-                boolean result = logInCheck(idEdit.getText().toString(),pwdEdit.getText().toString());
+                String email = idEdit.getText().toString();
+                String password = pwdEdit.getText().toString();
+
+                boolean result = logInCheck(email, password);
 
                 if(result){
                     // 로그인 정보 저장
-                    saveLoginInfo(idEdit.getText().toString(),pwdEdit.getText().toString());
+                    JSONObject req_json = new JSONObject();
+                    String name = "";
+
+                    try {
+                        //request body
+                        req_json.put("email",email);
+                        req_json.put("password",password);
+
+                        // get response
+                        JSONObject response = postRequest(req_json,"users/");
+                        // jsonString으로된 유저 정보 result에 저장
+                        String infoResult = response.getString("info");
+
+                        //string to json
+                        JSONObject userInfo = new JSONObject(infoResult);
+
+                        // user name phoneNum setting
+                        name = userInfo.getString("name");
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    // jsonString으로된 유저 정보 result에 저장
+
+                    saveLoginInfo(email, password, name);
 
                     //메인 엑티비티로 전환
                     intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -95,6 +122,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
+
+    public JSONObject postRequest(JSONObject req_json,String url){
+        JSONObject res_obj;
+        RequestToServer reqToServer = new RequestToServer(); // 서버 요청 클래스
+        JSONObject result = null;
+
+        if (req_json.length() > 0) {
+            try {
+                //reqToserver execute / params 0 = GET OR POST / 1 = call function / 2 = request json
+                res_obj = new JSONObject(reqToServer.execute("POST", url, String.valueOf(req_json)).get());
+
+                result = res_obj;
+
+
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
+        }
+        return result;
+    }
+
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(getApplicationContext(),SelectLoginActivity.class);
@@ -143,12 +191,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         anim.setRepeatCount(1); // 시작 전 시간 간격 milliseconds
         logInFailMessageText.startAnimation(anim); // 깜빡임 시작
     }
-    void saveLoginInfo(String email, String password){
+    void saveLoginInfo(String email, String password, String name){
         SharedPreferences loginInfo = getSharedPreferences("loginInfo",MODE_PRIVATE);
         SharedPreferences.Editor editor = loginInfo.edit();
 
         editor.putString("email",email);
         editor.putString("password",password);
+        editor.putString("name", name);
 
         editor.commit();
 

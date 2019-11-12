@@ -10,7 +10,31 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="45dp"
+        android:id="@+id/nameText"
+        android:textSize="25sp"
+        android:textColor="#1f2021"
+        android:lineSpacingExtra="12sp"
         android:text="Hello World!"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="13sp"
+        android:textColor="#1f2021"
+        android:lineSpacingExtra="6sp"
+        android:text="당신의 개인 신분증"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewVertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
