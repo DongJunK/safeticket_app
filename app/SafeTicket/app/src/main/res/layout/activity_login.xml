@@ -110,11 +110,15 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="10dp"
                     android:visibility="invisible"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
                 <TextView
                     android:id="@+id/signUpText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="60dp"
+                    android:layout_marginRight="20dp"
                     android:layout_marginTop="10dp"
                     android:clickable="true"
                     android:lineSpacingExtra="6sp"

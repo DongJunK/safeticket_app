@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.safeticket.Interfaces.RequestToServer;
@@ -43,7 +44,15 @@ public class ReadQrCodeActivity extends AppCompatActivity {
     void scanQrCode(IntentResult result){
         try {
             JSONObject ticketInfo = new JSONObject(result.getContents());
-            //enrollTicket(ticketInfo);
+            if(enrollTicket(ticketInfo)){
+                Log.i("saficket","등록성공");
+            }else{
+                Log.i("saficket","등록실패");
+            }
+
+            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+            startActivity(intent);
+            finish();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -56,9 +65,19 @@ public class ReadQrCodeActivity extends AppCompatActivity {
         JSONObject req_json = new JSONObject(); // 요청 json
         boolean result = false; // 요청 결과 값
 
+
         try {
+            Log.i("saficket",ticketInfo.getString("token")+" "+ticketInfo.getString("email")+" "
+                    +ticketInfo.getString("venue")
+                    +" "+ticketInfo.getString("event_name")
+                    +" " +ticketInfo.getString("event_date")
+                    +" "+ticketInfo.getString("event_time")
+                    +" "+ticketInfo.getString("ticket_issuer")
+                    +" "+ticketInfo.getString("payment_time")
+            );
+
             req_json.put("authorization",ticketInfo.getString("token"));
-            req_json.put("email" , ticketInfo.getString("email"));
+            req_json.put("attendee_id" , ticketInfo.getString("email"));
             req_json.put("venue" , ticketInfo.getString("venue"));
             req_json.put("event_name" , ticketInfo.getString("event_name"));
             req_json.put("evnet_date" , ticketInfo.getString("event_date"));
@@ -72,7 +91,7 @@ public class ReadQrCodeActivity extends AppCompatActivity {
         if (req_json.length() > 0) {
             try {
                 //reqToserver execute / params 0 = GET OR POST / 1 = call function / 2 = request json
-                res_obj = new JSONObject(reqToServer.execute("POST", "users/join",String.valueOf(req_json)).get());
+                res_obj = new JSONObject(reqToServer.execute("POST", "ticket/",String.valueOf(req_json)).get());
                 try {
                     result = res_obj.getBoolean("result");
 

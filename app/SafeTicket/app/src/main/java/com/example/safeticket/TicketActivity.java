@@ -104,10 +104,10 @@ public class TicketActivity extends AppCompatActivity {
             JSONObject obj = new JSONObject(res_obj);
             JSONObject ticketInfo = obj.getJSONObject("Record");
             eventNameText.setText(ticketInfo.getString("event_id"));
-            eventDateText.setText(ticketInfo.getString("EventDate"));
-            eventTimeText.setText(ticketInfo.getString("EventTime"));
-            venueText.setText(ticketInfo.getString("Venue"));
-            ticketIssuerText.setText(ticketInfo.getString("TicketIssuer"));
+            eventDateText.setText(ticketInfo.getString("event_date"));
+            eventTimeText.setText(ticketInfo.getString("event_time"));
+            venueText.setText(ticketInfo.getString("venue"));
+            ticketIssuerText.setText(ticketInfo.getString("ticket_issuer"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
