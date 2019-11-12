@@ -30,11 +30,22 @@
         />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewVertical"
-        android:layout_width="wrap_content"
+        android:id="@+id/userInfoView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="13sp"
+        android:textColor="#1f2021"
+        android:lineSpacingExtra="6sp"
+        android:text="당신의 티켓"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"

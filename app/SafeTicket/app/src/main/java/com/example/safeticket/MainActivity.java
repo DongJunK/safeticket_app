@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     TextView nameText;
     SharedPreferences loginInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,16 +39,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String name = loginInfo.getString("name",""); // 이메일 호출, default ""반환
         nameText.setText(name + "님, 안녕하세요");
 
-        RecyclerView view = findViewById(R.id.recyclerViewVertical);
+        RecyclerView userInfoView = findViewById(R.id.userInfoView);
         this.initList();
 
-        HorizontalAdapter horizontalAdapter = new HorizontalAdapter(userInfoList, name);
+        UserInfoAdapter userInfoAdapter = new UserInfoAdapter(userInfoList, name);
 
-        view.setHasFixedSize(true);
-        view.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        view.setAdapter(horizontalAdapter);
+        userInfoView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        userInfoView.setAdapter(userInfoAdapter);
+        userInfoView.addItemDecoration(new RecyclerDecoration(30));
 
         //////////////////////////////////////
+
+
+
         Button registerUserInfoButton = (Button) findViewById(R.id.registerUserInfoButton);
         registerUserInfoButton.setOnClickListener(this);
 
@@ -80,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         test = new UserInfo("운전면허증", "65656", "운전", "2019-11-12");
         userInfoList.add(test);
     }
-    
+
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(getApplicationContext(), UserActivity.class);
