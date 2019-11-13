@@ -79,7 +79,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 if(checkPwd(pwdEdit, pwdCheckEdit)){
                     if(modifiedRequest()){
                         // 자동로그인정보 변경
-                        saveLoginInfo(email,pwdEdit.getText().toString());
+                        saveLoginInfo(email,pwdEdit.getText().toString(), nameEdit.getText().toString());
 
                         intent = new Intent(getApplicationContext(),MainActivity.class);
                         startActivity(intent);
@@ -249,11 +249,12 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     }
 
     //자동로그인 정보 변경
-    void saveLoginInfo(String email, String password){
+    void saveLoginInfo(String email, String password, String name){
         SharedPreferences.Editor editor = loginInfo.edit();
 
         editor.putString("email",email);
         editor.putString("password",password);
+        editor.putString("name", name);
 
         editor.commit();
     }
@@ -263,6 +264,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
 
         editor.remove("email");
         editor.remove("password");
+        editor.remove("name");
         editor.commit();
     }
 

@@ -1,23 +1,41 @@
 package com.example.safeticket;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import android.view.View;
-import android.widget.Button;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.safeticket.Interfaces.RequestToServer;
-import com.google.zxing.qrcode.QRCodeReader;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private BackPressCloseHandler bpcHandler;
     private String attendeeId = "owen1994";
+    private ArrayList<UserInfo> userInfoList = new ArrayList<UserInfo>();
+    private ArrayList<Ticket> ticketList = new ArrayList<Ticket>();
+    private Animation fab_open, fab_close;
+    private Boolean isFabOpen = false;
+
+    FloatingActionButton menuButton, registerButton, myPageButton, scannerButton;
+    TextView nameText;
+    SharedPreferences loginInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,38 +43,115 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         bpcHandler = new BackPressCloseHandler(this);
 
-        Button registerUserInfoButton = (Button) findViewById(R.id.registerUserInfoButton);
-        registerUserInfoButton.setOnClickListener(this);
+        nameText = (TextView) findViewById(R.id.nameText);
+        loginInfo = getSharedPreferences("loginInfo",MODE_PRIVATE);
+        String name = loginInfo.getString("name",""); // 이메일 호출, default ""반환
+        nameText.setText(name + "님, 안녕하세요");
 
-        Button userButton = (Button) findViewById(R.id.userButton);
-        userButton.setOnClickListener(this);
+        RecyclerView userInfoView = findViewById(R.id.userInfoView);
+        this.initList();
+        getTicketList();
 
-        Button ticketButton = (Button) findViewById(R.id.ticketButton);
-        ticketButton.setOnClickListener(this);
+        UserInfoAdapter userInfoAdapter = new UserInfoAdapter(userInfoList, name);
 
-        Button userInfoButton = (Button) findViewById(R.id.userInfoButton);
-        userInfoButton.setOnClickListener(this);
+        userInfoView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        userInfoView.setAdapter(userInfoAdapter);
+        userInfoView.addItemDecoration(new RecyclerDecoration(30));
+
+        RecyclerView ticketView = findViewById(R.id.ticketView);
+
+        TicketAdapter ticketAdapter = new TicketAdapter(ticketList);
+        ticketView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        ticketView.setAdapter(ticketAdapter);
+        DividerItemDecoration dividerItemDecoration =
+                new DividerItemDecoration(ticketView.getContext(), new LinearLayoutManager(this).getOrientation());
+        ticketView.addItemDecoration(dividerItemDecoration);
+
+        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
+
+        menuButton = (FloatingActionButton) findViewById(R.id.menuButton);
+        registerButton = (FloatingActionButton) findViewById(R.id.registerButton);
+        myPageButton = (FloatingActionButton) findViewById(R.id.myPageButton);
+        scannerButton = (FloatingActionButton) findViewById(R.id.scannerButton);
+
+        menuButton.setOnClickListener(this);
+        registerButton.setOnClickListener(this);
+        myPageButton.setOnClickListener(this);
+        scannerButton.setOnClickListener(this);
+    }
+
+    private void initList() {
+        UserInfo test = new UserInfo("운전면허증", "123994444", "운전", "2019-11-12");
+        userInfoList.add(test);
+        test = new UserInfo("운전면허증", "343434", "운전", "2019-11-12");
+        userInfoList.add(test);
+        test = new UserInfo("운전면허증", "565656", "운전", "2019-11-12");
+        userInfoList.add(test);
+        test = new UserInfo("운전면허증", "787878", "운전", "2019-11-12");
+        userInfoList.add(test);
+        test = new UserInfo("운전면허증", "909090", "운전", "2019-11-12");
+        userInfoList.add(test);
+        test = new UserInfo("운전면허증", "321321", "운전", "2019-11-12");
+        userInfoList.add(test);
+        test = new UserInfo("운전면허증", "235", "운전", "2019-11-12");
+        userInfoList.add(test);
+        test = new UserInfo("운전면허증", "65656", "운전", "2019-11-12");
+        userInfoList.add(test);
+    }
+
+    private void anim()
+    {
+        if (isFabOpen) {
+            registerButton.startAnimation(fab_close);
+            myPageButton.startAnimation(fab_close);
+            scannerButton.startAnimation(fab_close);
+
+            registerButton.setClickable(false);
+            myPageButton.setClickable(false);
+            scannerButton.setClickable(false);
+
+            isFabOpen = false;
+        } else {
+            registerButton.startAnimation(fab_open);
+            myPageButton.startAnimation(fab_open);
+            scannerButton.startAnimation(fab_open);
+
+            registerButton.setClickable(true);
+            myPageButton.setClickable(true);
+            scannerButton.setClickable(true);
+
+            isFabOpen = true;
+        }
     }
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(getApplicationContext(), UserActivity.class);
-        switch (v.getId()){
-            case R.id.registerUserInfoButton:
-                RegisterUserInfoDialog customDialog = new RegisterUserInfoDialog(MainActivity.this);
-                customDialog.callFunction();
-                return;
-            case R.id.userButton:
+        int id = v.getId();
+        Intent intent = null;
+        switch (id){
+            case R.id.menuButton:
+                anim();
                 break;
-            case R.id.ticketButton:
-                intent.setClass(getApplicationContext(), TicketActivity.class);
+            case R.id.registerButton:
+                anim();
+                Toast.makeText(this, "Register Action Button", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.userInfoButton:
-                intent.setClass(getApplicationContext(), UserInfoActivity.class);
+            case R.id.myPageButton:
+                anim();
+                intent = new Intent(this, UserInfoActivity.class);
+                break;
+            case R.id.scannerButton:
+                anim();
+                intent = new Intent(this, ReadQrCodeActivity.class);
                 break;
         }
-        startActivity(intent);
-        finish();
+
+        if(intent != null)
+        {
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override
@@ -64,34 +159,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bpcHandler.onBackPressed();
     }
 
-    public JSONArray getTicketList(View v){
-        JSONObject obj = new JSONObject();
+    public JSONArray getTicketList(){
+        JSONObject obj = null;
         RequestToServer reqToServer = new RequestToServer(); // Request to Server Class
-        JSONObject req_json = new JSONObject();
-        JSONArray responseMsg; // response JSON
+        JSONArray ticketArray; // response JSON
 
         try {
-            req_json.put("attendee_id" , attendeeId);
+            //reqToserver execute / params 0 = GET OR POST / 1 = call function / 2 = request json
+            obj = new JSONObject(reqToServer.execute("GET", "ticket/list?attendee_id=" + attendeeId).get());
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        if (req_json.length() > 0) {
             try {
-                //reqToserver execute / params 0 = GET OR POST / 1 = call function / 2 = request json
-                obj = new JSONObject(reqToServer.execute("GET", "ticket/list",String.valueOf(req_json)).get());
-                try {
-                    responseMsg = obj.getJSONArray("list");
-                    return responseMsg;
+                ticketArray = new JSONArray(obj.get("list").toString());
 
-                } catch (JSONException e) {
-                    System.out.println(e.toString());
+                for (int i = 0; i < ticketArray.length(); i++) {
+                    JSONObject ticketObject = ticketArray.getJSONObject(i);
+
+                    String ticketCode = ticketObject.getString("TicketCode");
+                    String eventName = ticketObject.getString("EventName");
+                    String eventDate = ticketObject.getString("EventDate");
+                    Ticket ticket = new Ticket(ticketCode, eventName, eventDate);
+
+                    ticketList.add(ticket);
                 }
-            } catch (Exception e) {
+                return ticketArray;
+            } catch (JSONException e) {
                 System.out.println(e.toString());
             }
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
+
         return null;
     }
 }
