@@ -8,27 +8,32 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
+
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.safeticket.Interfaces.RequestToServer;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URLDecoder;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private BackPressCloseHandler bpcHandler;
     private String attendeeId = "owen1994";
     private ArrayList<UserInfo> userInfoList = new ArrayList<UserInfo>();
     private ArrayList<Ticket> ticketList = new ArrayList<Ticket>();
+    private Animation fab_open, fab_close;
+    private Boolean isFabOpen = false;
 
+    FloatingActionButton menuButton, registerButton, myPageButton, scannerButton;
     TextView nameText;
     SharedPreferences loginInfo;
 
@@ -61,6 +66,19 @@ public class MainActivity extends AppCompatActivity {
         DividerItemDecoration dividerItemDecoration =
                 new DividerItemDecoration(ticketView.getContext(), new LinearLayoutManager(this).getOrientation());
         ticketView.addItemDecoration(dividerItemDecoration);
+
+        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
+
+        menuButton = (FloatingActionButton) findViewById(R.id.menuButton);
+        registerButton = (FloatingActionButton) findViewById(R.id.registerButton);
+        myPageButton = (FloatingActionButton) findViewById(R.id.myPageButton);
+        scannerButton = (FloatingActionButton) findViewById(R.id.scannerButton);
+
+        menuButton.setOnClickListener(this);
+        registerButton.setOnClickListener(this);
+        myPageButton.setOnClickListener(this);
+        scannerButton.setOnClickListener(this);
     }
 
     private void initList() {
@@ -82,26 +100,59 @@ public class MainActivity extends AppCompatActivity {
         userInfoList.add(test);
     }
 
-//    @Override
-//    public void onClick(View v) {
-//        Intent intent = new Intent(getApplicationContext(), UserActivity.class);
-//        switch (v.getId()){
-//            case R.id.registerUserInfoButton:
-//                RegisterUserInfoDialog customDialog = new RegisterUserInfoDialog(MainActivity.this);
-//                customDialog.callFunction();
-//                return;
-//            case R.id.userButton:
-//                break;
-//            case R.id.ticketButton:
-//                intent.setClass(getApplicationContext(), TicketActivity.class);
-//                break;
-//            case R.id.userInfoButton:
-//                intent.setClass(getApplicationContext(), UserInfoActivity.class);
-//                break;
-//        }
-//        startActivity(intent);
-//        finish();
-//    }
+    private void anim()
+    {
+        if (isFabOpen) {
+            registerButton.startAnimation(fab_close);
+            myPageButton.startAnimation(fab_close);
+            scannerButton.startAnimation(fab_close);
+
+            registerButton.setClickable(false);
+            myPageButton.setClickable(false);
+            scannerButton.setClickable(false);
+
+            isFabOpen = false;
+        } else {
+            registerButton.startAnimation(fab_open);
+            myPageButton.startAnimation(fab_open);
+            scannerButton.startAnimation(fab_open);
+
+            registerButton.setClickable(true);
+            myPageButton.setClickable(true);
+            scannerButton.setClickable(true);
+
+            isFabOpen = true;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        Intent intent = null;
+        switch (id){
+            case R.id.menuButton:
+                anim();
+                break;
+            case R.id.registerButton:
+                anim();
+                Toast.makeText(this, "Register Action Button", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.myPageButton:
+                anim();
+                intent = new Intent(this, UserInfoActivity.class);
+                break;
+            case R.id.scannerButton:
+                anim();
+                intent = new Intent(this, ReadQrCodeActivity.class);
+                break;
+        }
+
+        if(intent != null)
+        {
+            startActivity(intent);
+            finish();
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -109,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public JSONArray getTicketList(){
-        JSONObject obj = new JSONObject();
+        JSONObject obj = null;
         RequestToServer reqToServer = new RequestToServer(); // Request to Server Class
         JSONArray ticketArray; // response JSON
 

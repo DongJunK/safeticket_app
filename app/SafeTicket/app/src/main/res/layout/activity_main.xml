@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,49 +8,103 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="45dp"
-        android:id="@+id/nameText"
-        android:textSize="25sp"
-        android:textColor="#1f2021"
-        android:lineSpacingExtra="12sp"
-        android:text="Hello World!"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="20dp"
-        android:textSize="13sp"
-        android:textColor="#1f2021"
-        android:lineSpacingExtra="6sp"
-        android:text="당신의 개인 신분증"
-        />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/userInfoView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"/>
+        android:orientation="vertical">
 
-    <TextView
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="45dp"
+            android:id="@+id/nameText"
+            android:textSize="25sp"
+            android:textColor="#1f2021"
+            android:lineSpacingExtra="12sp"
+            android:text="Hello World!"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:textSize="13sp"
+            android:textColor="#1f2021"
+            android:lineSpacingExtra="6sp"
+            android:text="당신의 개인 신분증"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/userInfoView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="20dp"
+            android:textSize="13sp"
+            android:textColor="#1f2021"
+            android:lineSpacingExtra="6sp"
+            android:text="당신의 티켓"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ticketView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"/>
+=
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/scannerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="20dp"
-        android:textSize="13sp"
-        android:textColor="#1f2021"
-        android:lineSpacingExtra="6sp"
-        android:text="당신의 티켓"/>
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="15sp"
+        android:layout_marginBottom="230dp"
+        android:src="@drawable/center_focus"
+        android:visibility="invisible"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/ticketView"
-        android:layout_width="match_parent"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/myPageButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"/>
-</LinearLayout>
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="15sp"
+        android:layout_marginBottom="160dp"
+        android:src="@drawable/account_circle"
+        android:visibility="invisible"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/registerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="15sp"
+        android:layout_marginBottom="90dp"
+        android:src="@drawable/round_add_circle"
+        android:visibility="invisible"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/menuButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="15sp"
+        android:clickable="true"
+        android:src="@drawable/menu_button" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
