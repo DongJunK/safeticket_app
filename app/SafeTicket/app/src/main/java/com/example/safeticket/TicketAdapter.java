@@ -62,8 +62,7 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
                 Context context = v.getContext();
                 Intent intent = new Intent(context, TicketActivity.class);
 
-                intent.putExtra("AttendeeId", ticketList.get(position).getAttendeeId());
-                intent.putExtra("PaymentTime", ticketList.get(position).getPaymentTime());
+                intent.putExtra("TicketCode", ticketList.get(position).getTicketCode());
 
                 context.startActivity(intent);
             }

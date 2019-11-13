@@ -33,6 +33,7 @@ public class Ticket {
         this.paymentTime = paymentTime;
     }
 
+    String getTicketCode() { return this.ticketCode; }
     String getAttendeeId() { return this.attendeeId; }
     String getEventName() { return this.eventName; }
     String getVenue() { return this.venue; }

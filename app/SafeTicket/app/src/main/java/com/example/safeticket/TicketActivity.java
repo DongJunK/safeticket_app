@@ -29,7 +29,7 @@ import org.json.JSONObject;
 import java.sql.SQLOutput;
 
 public class TicketActivity extends AppCompatActivity {
-    String tmpTicketCode = "EVN001";
+    private String ticketCode;
     String email;
     TextView eventNameText;
     TextView eventDateText;
@@ -54,6 +54,9 @@ public class TicketActivity extends AppCompatActivity {
         SharedPreferences loginInfo = getSharedPreferences("loginInfo",MODE_PRIVATE);
         email = loginInfo.getString("email","");
 
+        Bundle extras = getIntent().getExtras();
+        ticketCode = extras.getString("TicketCode");
+
         setTicketInfo(); // Ticket info setting at TextView
         createQrCode(); // create ticket Qr Code
 
@@ -76,7 +79,7 @@ public class TicketActivity extends AppCompatActivity {
     }
 
     // 티켓 요청
-    String reqTicektInfo(String ticket_code) {
+    String reqTicektInfo() {
         JSONObject res_obj; // 응답 json
         RequestToServer reqToServer = new RequestToServer(); // 서버 요청 클래스
         JSONObject req_json = new JSONObject(); // 요청 json
@@ -84,7 +87,8 @@ public class TicketActivity extends AppCompatActivity {
 
         try {
             //reqToserver execute / params 0 = GET OR POST / 1 = call function / 2 = request json
-            res_obj = new JSONObject(reqToServer.execute("GET", "ticket/info?ticket_code=" + ticket_code, String.valueOf(req_json)).get());
+            res_obj = new JSONObject(reqToServer.execute("GET", "ticket/info?ticket_code=" + ticketCode, String.valueOf(req_json)).get());
+
             try {
                 result = res_obj.getString("info");
                 System.out.println(result);
@@ -99,15 +103,15 @@ public class TicketActivity extends AppCompatActivity {
         return result;
     }
     void setTicketInfo(){
-        String res_obj = reqTicektInfo(tmpTicketCode);
+        String res_obj = reqTicektInfo();
         try {
             JSONObject obj = new JSONObject(res_obj);
-            JSONObject ticketInfo = obj.getJSONObject("Record");
-            eventNameText.setText(ticketInfo.getString("event_id"));
-            eventDateText.setText(ticketInfo.getString("EventDate"));
-            eventTimeText.setText(ticketInfo.getString("EventTime"));
-            venueText.setText(ticketInfo.getString("Venue"));
-            ticketIssuerText.setText(ticketInfo.getString("TicketIssuer"));
+
+            eventNameText.setText(obj.getString("event_name"));
+            eventDateText.setText(obj.getString("event_date"));
+            eventTimeText.setText(obj.getString("event_time"));
+            venueText.setText(obj.getString("venue"));
+            ticketIssuerText.setText(obj.getString("ticket_issuer"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -116,7 +120,7 @@ public class TicketActivity extends AppCompatActivity {
     void createQrCode(){
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try{
-            BitMatrix bitMatrix = multiFormatWriter.encode(tmpTicketCode, BarcodeFormat.QR_CODE,300,300);
+            BitMatrix bitMatrix = multiFormatWriter.encode(ticketCode, BarcodeFormat.QR_CODE,300,300);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
             ticketQrCodeView.setImageBitmap(bitmap);
