@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Animation fab_open, fab_close;
     private Boolean isFabOpen = false;
 
-    FloatingActionButton menuButton, registerButton, myPageButton, scannerButton;
+    FloatingActionButton menuButton, registerButton, myPageButton, scannerButton, logoutButton;
     TextView nameText;
     SharedPreferences loginInfo;
 
@@ -74,11 +74,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         registerButton = (FloatingActionButton) findViewById(R.id.registerButton);
         myPageButton = (FloatingActionButton) findViewById(R.id.myPageButton);
         scannerButton = (FloatingActionButton) findViewById(R.id.scannerButton);
+        logoutButton = (FloatingActionButton) findViewById(R.id.logoutButton);
 
         menuButton.setOnClickListener(this);
         registerButton.setOnClickListener(this);
         myPageButton.setOnClickListener(this);
         scannerButton.setOnClickListener(this);
+        logoutButton.setOnClickListener(this);
     }
 
     private void initList() {
@@ -106,20 +108,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             registerButton.startAnimation(fab_close);
             myPageButton.startAnimation(fab_close);
             scannerButton.startAnimation(fab_close);
+            logoutButton.startAnimation(fab_close);
 
             registerButton.setClickable(false);
             myPageButton.setClickable(false);
             scannerButton.setClickable(false);
+            logoutButton.setClickable(false);
 
             isFabOpen = false;
         } else {
             registerButton.startAnimation(fab_open);
             myPageButton.startAnimation(fab_open);
             scannerButton.startAnimation(fab_open);
+            logoutButton.startAnimation(fab_open);
 
             registerButton.setClickable(true);
             myPageButton.setClickable(true);
             scannerButton.setClickable(true);
+            logoutButton.setClickable(true);
 
             isFabOpen = true;
         }
@@ -135,7 +141,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.registerButton:
                 anim();
-                Toast.makeText(this, "Register Action Button", Toast.LENGTH_SHORT).show();
+                RegisterUserInfoDialog dlg = new RegisterUserInfoDialog(MainActivity.this);
+                dlg.callFunction();
                 break;
             case R.id.myPageButton:
                 anim();
@@ -144,6 +151,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.scannerButton:
                 anim();
                 intent = new Intent(this, ReadQrCodeActivity.class);
+                break;
+            case R.id.logoutButton:
+                anim();
+                SharedPreferences.Editor editor = loginInfo.edit();
+                intent = new Intent(this, SelectLoginActivity.class);
+                editor.clear();
+                editor.commit();
                 break;
         }
 
