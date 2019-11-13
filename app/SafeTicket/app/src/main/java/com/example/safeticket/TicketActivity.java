@@ -51,7 +51,7 @@ public class TicketActivity extends AppCompatActivity {
         ticketQrCodeView = (ImageView) findViewById(R.id.ticketQrCodeView);
         ticketIssuerText = (TextView) findViewById(R.id.ticketIssuerText);
 
-        SharedPreferences loginInfo = getSharedPreferences("loginInfo",MODE_PRIVATE);
+        loginInfo = getSharedPreferences("loginInfo",MODE_PRIVATE);
         email = loginInfo.getString("email","");
 
         Bundle extras = getIntent().getExtras();
@@ -117,9 +117,17 @@ public class TicketActivity extends AppCompatActivity {
     }
 
     void createQrCode(){
+        JSONObject qrcode_obj = new JSONObject();
+        try {
+            qrcode_obj.put("email",email);
+            qrcode_obj.put("ticketCode",ticketCode);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try{
-            BitMatrix bitMatrix = multiFormatWriter.encode(ticketCode, BarcodeFormat.QR_CODE,300,300);
+            BitMatrix bitMatrix = multiFormatWriter.encode(qrcode_obj.toString(), BarcodeFormat.QR_CODE,300,300);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
             ticketQrCodeView.setImageBitmap(bitmap);
