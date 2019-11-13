@@ -1,5 +1,6 @@
 package com.example.safeticket;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -13,13 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class UserInfoAdapter extends RecyclerView.Adapter<UserInfoAdapter.UserInfoViewHolder> {
+    private Activity activity;
     private String name;
     private ArrayList<UserInfo> userInfoList;
 
-    public UserInfoAdapter(ArrayList<UserInfo> userInfoList, String name)
+    public UserInfoAdapter(ArrayList<UserInfo> userInfoList, String name, Activity activity)
     {
         this.userInfoList = userInfoList;
         this.name = name;
+        this.activity = activity;
     }
 
     public class UserInfoViewHolder extends RecyclerView.ViewHolder{
@@ -76,6 +79,7 @@ public class UserInfoAdapter extends RecyclerView.Adapter<UserInfoAdapter.UserIn
                 intent.putExtra("issueDate", userInfo.getIssueDate());
 
                 context.startActivity(intent);
+                activity.finish();
             }
         });
     }

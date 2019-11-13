@@ -25,7 +25,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
     private BackPressCloseHandler bpcHandler;
     private String attendeeId = "owen1994";
     private ArrayList<UserInfo> userInfoList = new ArrayList<UserInfo>();
@@ -47,12 +46,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         loginInfo = getSharedPreferences("loginInfo",MODE_PRIVATE);
         String name = loginInfo.getString("name",""); // 이메일 호출, default ""반환
         nameText.setText(name + "님, 안녕하세요");
+        attendeeId = loginInfo.getString("email", "");
 
         RecyclerView userInfoView = findViewById(R.id.userInfoView);
         this.initList();
         getTicketList();
 
-        UserInfoAdapter userInfoAdapter = new UserInfoAdapter(userInfoList, name);
+        UserInfoAdapter userInfoAdapter = new UserInfoAdapter(userInfoList, name, this);
 
         userInfoView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         userInfoView.setAdapter(userInfoAdapter);
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         RecyclerView ticketView = findViewById(R.id.ticketView);
 
-        TicketAdapter ticketAdapter = new TicketAdapter(ticketList);
+        TicketAdapter ticketAdapter = new TicketAdapter(ticketList, this);
         ticketView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         ticketView.setAdapter(ticketAdapter);
         DividerItemDecoration dividerItemDecoration =

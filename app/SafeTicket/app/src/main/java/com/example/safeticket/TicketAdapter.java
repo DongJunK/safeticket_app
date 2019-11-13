@@ -1,5 +1,6 @@
 package com.example.safeticket;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -13,11 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketViewHolder> {
+    private Activity activity;
     private ArrayList<Ticket> ticketList;
 
-    public TicketAdapter(ArrayList<Ticket> ticketList)
+    public TicketAdapter(ArrayList<Ticket> ticketList, Activity activity)
     {
         this.ticketList = ticketList;
+        this.activity = activity;
     }
 
     public class TicketViewHolder extends RecyclerView.ViewHolder{
@@ -65,6 +68,7 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
                 intent.putExtra("TicketCode", ticketList.get(position).getTicketCode());
 
                 context.startActivity(intent);
+                activity.finish();
             }
         });
     }
