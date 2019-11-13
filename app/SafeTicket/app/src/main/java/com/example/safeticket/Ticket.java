@@ -3,7 +3,8 @@ package com.example.safeticket;
 import java.util.Date;
 
 public class Ticket {
-    // 사용자 ID, 티켓코드, 공연이름, 장소, 날짜, 좌석, 시간, 발급처 명
+    // 사용자 ID, 공연이름, 장소, 날짜, 좌석, 시간, 발급처 명
+    private String ticketCode;
     private String attendeeId;
     private String eventName;
     private String venue;
@@ -12,9 +13,17 @@ public class Ticket {
     private String ticketIssuer;
     private String paymentTime;
 
-    Ticket(String attendeeId, String eventName, String venue,
+    Ticket(String ticketCode, String eventName, String eventDate)
+    {
+        this.ticketCode = ticketCode;
+        this.eventName = eventName;
+        this.eventDate = eventDate;
+    }
+
+    Ticket(String ticketCode, String attendeeId, String eventName, String venue,
            String eventDate, String eventTime, String ticketIssuer, String paymentTime)
     {
+        this.ticketCode = ticketCode;
         this.attendeeId = attendeeId;
         this.eventName = eventName;
         this.venue = venue;

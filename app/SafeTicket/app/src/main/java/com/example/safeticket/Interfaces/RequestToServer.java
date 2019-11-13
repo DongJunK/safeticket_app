@@ -19,7 +19,7 @@ public class RequestToServer extends AsyncTask<String, String, String> {
     protected String doInBackground(String... params) {
         String method = params[0].toUpperCase(); // GET or POST
         String func = params[1]; // rest api 호출 경로
-        String req_json = params[2]; // 요청 json
+
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
         if(method=="" || func == "")
@@ -43,6 +43,7 @@ public class RequestToServer extends AsyncTask<String, String, String> {
 
             if(method=="POST")
             {
+                String req_json = params[2]; // 요청 json
                 //서버로 보내기위해서 스트림 만듬
                 OutputStream outStream = urlConnection.getOutputStream();
                 //버퍼를 생성하고 넣음

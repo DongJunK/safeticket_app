@@ -11,13 +11,14 @@ public class RecyclerDecoration extends RecyclerView.ItemDecoration {
     private final int divWidth;
 
 
-    public RecyclerDecoration(int divHeight) {
-        this.divWidth = divHeight;
+    public RecyclerDecoration(int divWidth) {
+        this.divWidth = divWidth;
     }
 
     @Override
     public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
         outRect.right = divWidth;
+        //outRect.bottom = divWidth;
     }
 }

@@ -13,19 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class UserInfoAdapter extends RecyclerView.Adapter<UserInfoAdapter.UserInfoViewHolder> {
-    public interface OnListItemSelectedInterface {
-        void onItemSelected(View v, int position);
-    }
-
-    private OnListItemSelectedInterface mListener = null;
-
-
     private String name;
-    private ArrayList<UserInfo> dataList;
+    private ArrayList<UserInfo> userInfoList;
 
-    public UserInfoAdapter(ArrayList<UserInfo> data, String name)
+    public UserInfoAdapter(ArrayList<UserInfo> userInfoList, String name)
     {
-        this.dataList = data;
+        this.userInfoList = userInfoList;
         this.name = name;
     }
 
@@ -51,7 +44,7 @@ public class UserInfoAdapter extends RecyclerView.Adapter<UserInfoAdapter.UserIn
     {
         View v = LayoutInflater
                 .from(parent.getContext())
-                .inflate(R.layout.recyclerview_item, parent, false);
+                .inflate(R.layout.userinfo_item, parent, false);
 
         UserInfoViewHolder viewHolder = new UserInfoViewHolder(v);
         return viewHolder;
@@ -62,13 +55,13 @@ public class UserInfoAdapter extends RecyclerView.Adapter<UserInfoAdapter.UserIn
     {
         horizontalViewHolder
                 .typeText
-                .setText(dataList.get(position).getInfoType());
+                .setText(userInfoList.get(position).getInfoType());
         horizontalViewHolder
                 .idText
                 .setText(name);
         horizontalViewHolder
                 .issueText
-                .setText(dataList.get(position).getIssueNumber());
+                .setText(userInfoList.get(position).getIssueNumber());
 
         horizontalViewHolder.mView.setOnClickListener(new View.OnClickListener(){
 
@@ -76,7 +69,7 @@ public class UserInfoAdapter extends RecyclerView.Adapter<UserInfoAdapter.UserIn
             public void onClick(View v) {
                 Context context = v.getContext();
                 Intent intent = new Intent(context, UserActivity.class);
-                UserInfo userInfo = dataList.get(position);
+                UserInfo userInfo = userInfoList.get(position);
                 intent.putExtra("infoType", userInfo.getInfoType());
                 intent.putExtra("issueNumber", userInfo.getIssueNumber());
                 intent.putExtra("issuer", userInfo.getIssuer());
@@ -89,6 +82,6 @@ public class UserInfoAdapter extends RecyclerView.Adapter<UserInfoAdapter.UserIn
 
     @Override
     public int getItemCount() {
-        return dataList.size();
+        return userInfoList.size();
     }
 }
