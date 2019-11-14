@@ -48,7 +48,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         Bundle extras = getIntent().getExtras();
         if(extras!=null){
             sns_id = extras.getString("sns_id");
-            Log.i("saficket","sdfsdfsdfsdfs");
         }
 
         // xml과 연결 설정
