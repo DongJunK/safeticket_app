@@ -12,6 +12,7 @@ import com.example.safeticket.Interfaces.RequestToServer;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,6 +40,8 @@ public class ReadQrCodeActivity extends AppCompatActivity {
                 finish();
             } else {
                 scanQrCode();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
                 finish();
             }
         } else {
@@ -58,22 +61,21 @@ public class ReadQrCodeActivity extends AppCompatActivity {
     void scanQrCode() {
         try {
             JSONObject qrCode_json = new JSONObject(result.getContents());
-            if (whetherEnrollOrScan(qrCode_json)) { // 티켓 등록 Qr코드인지 검표 Qr코드인지 확인
+            if (!whetherEnrollOrScan(qrCode_json)) { // 티켓 등록 Qr코드인지 검표 Qr코드인지 확인
                 if (enrollTicket(qrCode_json)) { // 티켓 등록
                     Toast.makeText(this, "등록되었습니다", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, "다시 시도해주세요.", Toast.LENGTH_SHORT).show();
                 }
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
+
             } else { // 검표 qr코드일 때
                 JSONObject ticketInfo = scanTicket(qrCode_json.getString("ticket_code"));
+
                 if (ticketInfo.getString("attendee_id").equals(qrCode_json.getString("email"))) {
                     qrScan.setPrompt(ticketInfo.getString("attendee_id") + "확인되었습니다");
                     Toast.makeText(this, "확인되었습니다.", Toast.LENGTH_SHORT).show();
                 } else {
-                    qrScan.setPrompt(ticketInfo.getString("attendee_id") + "티켓을 확인해주세요");
+                    Toast.makeText(this,ticketInfo.getString("attendee_id") + "티켓을 확인해주세요",Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -95,7 +97,7 @@ public class ReadQrCodeActivity extends AppCompatActivity {
             req_json.put("attendee_id", ticketInfo.getString("email"));
             req_json.put("venue", ticketInfo.getString("venue"));
             req_json.put("event_name", ticketInfo.getString("event_name"));
-            req_json.put("evnet_date", ticketInfo.getString("event_date"));
+            req_json.put("event_date", ticketInfo.getString("event_date"));
             req_json.put("event_time", ticketInfo.getString("event_time"));
             req_json.put("ticket_issuer", ticketInfo.getString("ticket_issuer"));
             req_json.put("payment_time", ticketInfo.getString("payment_time"));
@@ -131,14 +133,16 @@ public class ReadQrCodeActivity extends AppCompatActivity {
         try {
             //reqToserver execute / params 0 = GET OR POST / 1 = call function / 2 = request json
             res_obj = new JSONObject(reqToServer.execute("GET", "ticket/info?ticket_code=" + ticketCode, String.valueOf(req_json)).get());
+
             try {
-                result = res_obj.getJSONObject("info");
+                result = new JSONObject(res_obj.get("info").toString());
             } catch (JSONException e) {
                 System.out.println(e.toString());
             }
         } catch (Exception e) {
             System.out.println(e.toString());
         }
+        System.out.println("anstjaos"+result.toString());
         return result;
     }
 
@@ -146,6 +150,7 @@ public class ReadQrCodeActivity extends AppCompatActivity {
     boolean whetherEnrollOrScan(JSONObject qrCode) {
         boolean check = true;
         String ticket_code = null;
+
         try {
             ticket_code = qrCode.getString("ticket_code");
         } catch (JSONException e) {
@@ -155,6 +160,7 @@ public class ReadQrCodeActivity extends AppCompatActivity {
         if(ticket_code==null){
             check = false;
         }
+
         return check;
     }
 }
