@@ -3,9 +3,13 @@ package com.example.safeticket;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,6 +34,8 @@ public class UserInfoAdapter extends RecyclerView.Adapter<UserInfoAdapter.UserIn
         protected TextView typeText;
         protected TextView idText;
         protected TextView issueText;
+        protected ImageView imageIcon;
+        protected LinearLayout userInfoLayout;
 
         public UserInfoViewHolder(View view)
         {
@@ -38,6 +44,8 @@ public class UserInfoAdapter extends RecyclerView.Adapter<UserInfoAdapter.UserIn
             typeText = (TextView) view.findViewById(R.id.typeText);
             idText = (TextView) view.findViewById(R.id.idText);
             issueText = (TextView) view.findViewById(R.id.issueText);
+            imageIcon = (ImageView) view.findViewById(R.id.imageIcon);
+            userInfoLayout = (LinearLayout) view.findViewById(R.id.userInfoLayout);
         }
     }
 
@@ -56,15 +64,46 @@ public class UserInfoAdapter extends RecyclerView.Adapter<UserInfoAdapter.UserIn
     @Override
     public void onBindViewHolder(UserInfoViewHolder horizontalViewHolder, final int position)
     {
+        String infoType= userInfoList.get(position).getInfoType();
+
         horizontalViewHolder
                 .typeText
-                .setText(userInfoList.get(position).getInfoType());
+                .setText(infoType);
         horizontalViewHolder
                 .idText
                 .setText(name);
         horizontalViewHolder
                 .issueText
                 .setText(userInfoList.get(position).getIssueNumber());
+
+        if(infoType.equals("운전면허증"))
+        {
+            horizontalViewHolder
+                    .imageIcon
+                    .setImageResource(R.drawable.car_ico);
+            horizontalViewHolder
+                    .userInfoLayout
+                    .setBackgroundResource(R.drawable.circle_layout);
+        }
+        else if(infoType.equals("주민등록증"))
+        {
+            horizontalViewHolder
+                    .imageIcon
+                    .setImageResource(R.drawable.student_ico);
+            horizontalViewHolder
+                    .userInfoLayout
+                    .setBackgroundResource(R.drawable.circle_layout_register);
+            horizontalViewHolder
+                    .typeText
+                    .setTextColor(Color.BLACK);
+            horizontalViewHolder
+                    .idText
+                    .setTextColor(Color.BLACK);
+            horizontalViewHolder
+                    .issueText
+                    .setTextColor(Color.BLACK);
+        }
+
 
         horizontalViewHolder.mView.setOnClickListener(new View.OnClickListener(){
 

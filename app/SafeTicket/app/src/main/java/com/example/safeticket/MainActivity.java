@@ -84,21 +84,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initList() {
-        UserInfo test = new UserInfo("운전면허증", "123994444", "운전", "2019-11-12");
+        UserInfo test = new UserInfo("운전면허증", "12-399-4444", "운전", "2017-11-12");
         userInfoList.add(test);
-        test = new UserInfo("운전면허증", "343434", "운전", "2019-11-12");
-        userInfoList.add(test);
-        test = new UserInfo("운전면허증", "565656", "운전", "2019-11-12");
-        userInfoList.add(test);
-        test = new UserInfo("운전면허증", "787878", "운전", "2019-11-12");
-        userInfoList.add(test);
-        test = new UserInfo("운전면허증", "909090", "운전", "2019-11-12");
-        userInfoList.add(test);
-        test = new UserInfo("운전면허증", "321321", "운전", "2019-11-12");
-        userInfoList.add(test);
-        test = new UserInfo("운전면허증", "235", "운전", "2019-11-12");
-        userInfoList.add(test);
-        test = new UserInfo("운전면허증", "65656", "운전", "2019-11-12");
+        test = new UserInfo("주민등록증", "940416-1", "주민등록증", "2018-04-12");
         userInfoList.add(test);
     }
 

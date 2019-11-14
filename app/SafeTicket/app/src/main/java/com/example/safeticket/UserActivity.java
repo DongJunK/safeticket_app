@@ -3,13 +3,19 @@ package com.example.safeticket;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class UserActivity extends AppCompatActivity {
+    LinearLayout userInfoLayout;
+    ImageView imageIcon;
     TextView infoTypeText;
     TextView issueNumberText;
     TextView issuerText;
@@ -30,6 +36,8 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
+        userInfoLayout = (LinearLayout) findViewById(R.id.userInfoLayout);
+        imageIcon = (ImageView) findViewById(R.id.imageIcon);
         infoTypeText = (TextView) findViewById(R.id.infoTypeText);
         issueNumberText = (TextView) findViewById(R.id.issueNumberText);
         issuerText = (TextView) findViewById(R.id.issuerText);
@@ -37,10 +45,19 @@ public class UserActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
 
-        infoTypeText.setText(extras.getString("infoType"));
+        String infoType = extras.getString("infoType");
+        infoTypeText.setText(infoType);
         issueNumberText.setText(extras.getString("issueNumber"));
         issuerText.setText(extras.getString("issuer"));
         issueDateText.setText(extras.getString("issueDate"));
+
+        if(infoType.equals("주민등록증"))
+        {
+            userInfoLayout.setBackgroundResource(R.drawable.ticket_bg_gray);
+            userInfoLayout.getBackground().setColorFilter(Color.DKGRAY, PorterDuff.Mode.SRC_ATOP);
+            imageIcon.setImageResource(R.drawable.student_ico);
+            imageIcon.setColorFilter(Color.WHITE);
+        }
     }
 
     @Override

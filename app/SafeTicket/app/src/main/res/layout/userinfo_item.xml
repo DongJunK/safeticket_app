@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:id="@+id/userInfoLayout"
     android:layout_width="150dp"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -19,8 +20,9 @@
         android:id="@+id/typeText"/>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/imageIcon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_gravity="right"
         android:layout_marginTop="10dp"
         android:layout_marginRight="15dp"
@@ -33,7 +35,7 @@
         android:textSize="15sp"
         android:textColor="#ffffff"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="90dp"
         android:lineSpacingExtra="7sp"
         android:id="@+id/idText"
         android:text="테스트"/>
