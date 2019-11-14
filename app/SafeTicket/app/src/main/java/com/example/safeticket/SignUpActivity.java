@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -30,6 +31,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     EditText phoneNumEdit; // 휴대폰번호 입력 텍스트 박스
     Button signUpButton; // 회원가입 버튼
     Button idExistCheckButton; // 아이디 중복 확인 버튼
+    String sns_id = "";
     String existIdMsg = "이미 계정이 있습니다";
     String notExistIdMsg = "사용가능한 아이디입니다";
     String pwdLengthMsg = "비밀번호는 7자리 이상 가능합니다";
@@ -37,10 +39,17 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     String notEmailFormatMsg = "이메일 형식이 아닙니다";
     String emailLongMsg = "이메일은 40자리 미만 가능합니다";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras!=null){
+            sns_id = extras.getString("sns_id");
+            Log.i("saficket","sdfsdfsdfsdfs");
+        }
 
         // xml과 연결 설정
         backButton = (ImageButton)findViewById(R.id.backButton);
@@ -53,7 +62,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         phoneNumEdit = (EditText)findViewById(R.id.phoneNumEdit);
         signUpButton = (Button)findViewById(R.id.signUpButton);
         idExistCheckButton = (Button)findViewById(R.id.idExistCheckButton);
-
 
         // 각 버튼 클릭 이벤트 등록
         backButton.setOnClickListener(this);
@@ -95,7 +103,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     break;
                 }
                 // 회원가입 가능하면 성공
-                if(checkSingUp()){
+                if(requestSignUp()){
                     saveLoginInfo(idEdit.getText().toString(), pwdEdit.getText().toString(), nameEdit.getText().toString());
                     intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
@@ -200,13 +208,17 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     // 회원 가입 요청
-    boolean checkSingUp(){
+    boolean requestSignUp(){
         JSONObject res_obj; // 응답 json
         RequestToServer reqToServer = new RequestToServer(); // 서버 요청 클래스
         JSONObject req_json = new JSONObject(); // 요청 json
         boolean responseMsg = false; // 요청 결과 값
 
         try {
+            if(sns_id!=""){
+                req_json.put("sns_id" , sns_id);
+                Log.i("saficket","reqSignUp");
+            }
             req_json.put("email" , idEdit.getText().toString());
             req_json.put("password" , pwdEdit.getText().toString());
             req_json.put("name" , nameEdit.getText().toString());
