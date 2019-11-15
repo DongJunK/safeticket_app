@@ -94,11 +94,12 @@
                 android:textSize="16sp" />
 
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_weight="0.1"
+                android:background="#ffffff"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/logo"/>
+                android:src="@drawable/search_black"/>
         </LinearLayout>
 
 
