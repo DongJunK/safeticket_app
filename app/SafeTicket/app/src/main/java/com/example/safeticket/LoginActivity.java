@@ -77,35 +77,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 String email = idEdit.getText().toString();
                 String password = pwdEdit.getText().toString();
 
-                boolean result = logInCheck(email, password);
+                JSONObject result = logInCheck(email, password);
 
-                if(result){
-                    // 로그인 정보 저장
-                    JSONObject req_json = new JSONObject();
-                    String name = "";
+                if(!result.isNull("name")){
 
                     try {
-                        //request body
-                        req_json.put("email",email);
-                        req_json.put("password",password);
-
-                        // get response
-                        JSONObject response = postRequest(req_json,"users/");
-                        // jsonString으로된 유저 정보 result에 저장
-                        String infoResult = response.getString("info");
-
-                        //string to json
-                        JSONObject userInfo = new JSONObject(infoResult);
-
-                        // user name phoneNum setting
-                        name = userInfo.getString("name");
-
+                        saveLoginInfo(email, password, result.getString("name"));
+                        Log.i("saficket",email+" "+password+" "+result.getString("name"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    // jsonString으로된 유저 정보 result에 저장
-
-                    saveLoginInfo(email, password, name);
 
                     //메인 엑티비티로 전환
                     intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -123,26 +104,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    public JSONObject postRequest(JSONObject req_json,String url){
-        JSONObject res_obj;
-        RequestToServer reqToServer = new RequestToServer(); // 서버 요청 클래스
-        JSONObject result = null;
-
-        if (req_json.length() > 0) {
-            try {
-                //reqToserver execute / params 0 = GET OR POST / 1 = call function / 2 = request json
-                res_obj = new JSONObject(reqToServer.execute("POST", url, String.valueOf(req_json)).get());
-
-                result = res_obj;
-
-
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
-        }
-        return result;
-    }
-
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(getApplicationContext(),SelectLoginActivity.class);
@@ -151,11 +112,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-    public boolean logInCheck(String email, String pwd){
+    public JSONObject logInCheck(String email, String pwd){
         JSONObject res_obj;
         RequestToServer reqToServer = new RequestToServer(); // 서버 요청 클래스
         JSONObject req_json = new JSONObject(); // req body json
-        boolean responseMsg = false; // res message
+        JSONObject responseMsg = null; // res message
 
         try {
             req_json.put("email" ,email);
@@ -170,7 +131,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 //reqToserver execute / params 0 = GET OR POST / 1 = call function / 2 = request json
                 res_obj = new JSONObject(reqToServer.execute("POST", "users/login",String.valueOf(req_json)).get());
                 try {
-                    responseMsg = res_obj.getBoolean("result");
+                    responseMsg = res_obj.getJSONObject("info");
 
                 } catch (JSONException e) {
                     System.out.println(e.toString());

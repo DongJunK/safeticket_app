@@ -97,7 +97,7 @@ public class SelectLoginActivity extends AppCompatActivity implements View.OnCli
                 md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
                 String something = new String(Base64.encode(md.digest(), 0));
-                Log.e("Hash key", something);
+
             }
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -155,7 +155,7 @@ public class SelectLoginActivity extends AppCompatActivity implements View.OnCli
                 @Override
                 public void onSuccess(MeV2Response response) {
                     String sns_id = String.valueOf(response.getId());
-                    Log.e("user id : " , String.valueOf(response.getId()));
+
                     // 이미 등록된 id가 있는지 체크
                     if(checkSnsID(sns_id)) {
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -190,7 +190,6 @@ public class SelectLoginActivity extends AppCompatActivity implements View.OnCli
 
         // 이메일, 패스워드가 저장되어 있고 로그인 성공하면 true 반환
         if(!email.equals("") && !pwd.equals("") && logInCheck(email,pwd)){
-            Log.e("success", "success");
             return true;
         }
         return false;
@@ -212,10 +211,9 @@ public class SelectLoginActivity extends AppCompatActivity implements View.OnCli
             if (req_json.length() > 0) {
                 try {
                     //reqToserver execute / params 0 = GET OR POST / 1 = call function / 2 = request json
-                    res_obj = new JSONObject(reqToServer.execute("POST", "users/sns_id", String.valueOf(req_json)).get());
+                    res_obj = new JSONObject(reqToServer.execute("POST", "users/login", String.valueOf(req_json)).get());
                     try {
                         responseMsg = res_obj.getBoolean("result");
-
                         if(responseMsg)
                         {
                             JSONObject infoJson = new JSONObject(res_obj.getJSONObject("info").toString());
@@ -237,7 +235,7 @@ public class SelectLoginActivity extends AppCompatActivity implements View.OnCli
         }catch(Exception e){
             responseMsg = false;
         }
-        Log.e("exist", String.valueOf(responseMsg));
+
         return responseMsg;
     }
 
@@ -247,8 +245,6 @@ public class SelectLoginActivity extends AppCompatActivity implements View.OnCli
         JSONObject req_json = new JSONObject(); // req body json
         boolean responseMsg = false; // response Message
 
-        Log.e("email", email);
-        Log.e("password", pwd);
         try {
             req_json.put("email" , email);
             req_json.put("password", pwd);
@@ -263,7 +259,6 @@ public class SelectLoginActivity extends AppCompatActivity implements View.OnCli
                     res_obj = new JSONObject(reqToServer.execute("POST", "users/login", String.valueOf(req_json)).get());
                     try {
                         responseMsg = res_obj.getBoolean("result");
-                        Log.e("response", String.valueOf(responseMsg));
                     } catch (JSONException e) {
                         System.out.println(e.toString());
                     }
