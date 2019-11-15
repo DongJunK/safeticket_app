@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.example.safeticket.Interfaces.RequestToServer;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -142,6 +144,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.logoutButton:
                 anim();
+                UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
+                    @Override
+                    public void onCompleteLogout() {
+
+                    }
+                });
                 SharedPreferences.Editor editor = loginInfo.edit();
                 intent = new Intent(this, SelectLoginActivity.class);
                 editor.clear();

@@ -58,6 +58,11 @@ public class UserActivity extends AppCompatActivity {
             imageIcon.setImageResource(R.drawable.student_ico);
             imageIcon.setColorFilter(Color.WHITE);
         }
+        else if(infoType.equals("운전면허증"))
+        {
+            userInfoLayout.setBackgroundResource(R.drawable.ticket_bg);
+            imageIcon.setImageResource(R.drawable.car_ico);
+        }
     }
 
     @Override

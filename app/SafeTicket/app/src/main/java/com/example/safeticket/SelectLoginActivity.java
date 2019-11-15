@@ -19,6 +19,8 @@ import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.MeResponseCallback;
+import com.kakao.usermgmt.callback.MeV2ResponseCallback;
+import com.kakao.usermgmt.response.MeV2Response;
 import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
 import com.kakao.util.helper.log.Logger;
@@ -28,12 +30,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SelectLoginActivity extends AppCompatActivity implements View.OnClickListener {
     private SessionCallback callback;      //콜백 선언
     //유저프로필
-    String token = "";
-    String name = "";
     TextView signUpText; // 회원가입 버튼
     Button emailLoginButton; // 이메일 로그인 버튼
 
@@ -55,14 +57,14 @@ public class SelectLoginActivity extends AppCompatActivity implements View.OnCli
             startActivity(intent);
             finish();
         }
+        else {
+            callback = new SessionCallback();
+            Session.getCurrentSession().addCallback(callback);
+            Session.getCurrentSession().checkAndImplicitOpen();
+        }
 
-        /*
-        callback = new SessionCallback();
-        Session.getCurrentSession().addCallback(callback);
-        Session.getCurrentSession().checkAndImplicitOpen();
 
         getAppKeyHash();
-        */
     }
 
     @Override
@@ -120,7 +122,7 @@ public class SelectLoginActivity extends AppCompatActivity implements View.OnCli
     private class SessionCallback implements ISessionCallback {
         @Override
         public void onSessionOpened() {
-            redirectSignupActivity();  // 세션 연결성공 시 redirectSignupActivity() 호출
+            requestMe();  // 세션 연결성공 시 redirectSignupActivity() 호출
         }
 
         @Override
@@ -131,10 +133,50 @@ public class SelectLoginActivity extends AppCompatActivity implements View.OnCli
             setContentView(R.layout.activity_login); // 세션 연결이 실패했을때
         }
         // 로그인화면을 다시 불러옴
+
+        private void requestMe() {
+            List<String> keys = new ArrayList<>();
+            keys.add("properties.nickname");
+            keys.add("properties.profile_image");
+            keys.add("kakao_account.email");
+
+            UserManagement.getInstance().me(keys, new MeV2ResponseCallback() {
+                @Override
+                public void onFailure(ErrorResult errorResult) {
+                    String message = "failed to get user info. msg=" + errorResult;
+                    //Log.e(message);
+                }
+
+                @Override
+                public void onSessionClosed(ErrorResult errorResult) {
+                    redirectSelectLoginActivity();
+                }
+
+                @Override
+                public void onSuccess(MeV2Response response) {
+                    String sns_id = String.valueOf(response.getId());
+                    Log.e("user id : " , String.valueOf(response.getId()));
+                    // 이미 등록된 id가 있는지 체크
+                    if(checkSnsID(sns_id)) {
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                    // 없을경우 가입시키기
+                    else {
+                        Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+                        intent.putExtra("sns_id", sns_id);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                }
+            });
+        }
     }
 
-    protected void redirectSignupActivity() {
-        final Intent intent = new Intent(this, MainActivity.class);
+    protected void redirectSelectLoginActivity() {
+        final Intent intent = new Intent(this, SelectLoginActivity.class);
         startActivity(intent);
         finish();
     }
@@ -148,10 +190,55 @@ public class SelectLoginActivity extends AppCompatActivity implements View.OnCli
 
         // 이메일, 패스워드가 저장되어 있고 로그인 성공하면 true 반환
         if(!email.equals("") && !pwd.equals("") && logInCheck(email,pwd)){
+            Log.e("success", "success");
             return true;
-        } else {
-            return false;
         }
+        return false;
+    }
+
+    private boolean checkSnsID(String sns_id)
+    {
+        JSONObject res_obj;
+        RequestToServer reqToServer = new RequestToServer(); // Request to Server Class
+        JSONObject req_json = new JSONObject(); // req body json
+        boolean responseMsg = false;
+
+        try {
+            req_json.put("sns_id" , sns_id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (req_json.length() > 0) {
+                try {
+                    //reqToserver execute / params 0 = GET OR POST / 1 = call function / 2 = request json
+                    res_obj = new JSONObject(reqToServer.execute("POST", "users/sns_id", String.valueOf(req_json)).get());
+                    try {
+                        responseMsg = res_obj.getBoolean("result");
+
+                        if(responseMsg)
+                        {
+                            JSONObject infoJson = new JSONObject(res_obj.getJSONObject("info").toString());
+                            SharedPreferences loginInfo = getSharedPreferences("loginInfo",MODE_PRIVATE);
+                            SharedPreferences.Editor editor = loginInfo.edit();
+
+                            editor.putString("email", infoJson.get("email").toString());
+                            editor.putString("password", infoJson.get("password").toString());
+                            editor.putString("name", infoJson.get("name").toString());
+                            editor.commit();
+                        }
+                    } catch (JSONException e) {
+                        System.out.println(e.toString());
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.toString());
+                }
+            }
+        }catch(Exception e){
+            responseMsg = false;
+        }
+        Log.e("exist", String.valueOf(responseMsg));
+        return responseMsg;
     }
 
     public boolean logInCheck(String email, String pwd){
@@ -160,6 +247,8 @@ public class SelectLoginActivity extends AppCompatActivity implements View.OnCli
         JSONObject req_json = new JSONObject(); // req body json
         boolean responseMsg = false; // response Message
 
+        Log.e("email", email);
+        Log.e("password", pwd);
         try {
             req_json.put("email" , email);
             req_json.put("password", pwd);
@@ -174,7 +263,7 @@ public class SelectLoginActivity extends AppCompatActivity implements View.OnCli
                     res_obj = new JSONObject(reqToServer.execute("POST", "users/login", String.valueOf(req_json)).get());
                     try {
                         responseMsg = res_obj.getBoolean("result");
-
+                        Log.e("response", String.valueOf(responseMsg));
                     } catch (JSONException e) {
                         System.out.println(e.toString());
                     }
