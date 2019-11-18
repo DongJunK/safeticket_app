@@ -1,5 +1,6 @@
 package com.example.safeticket;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +32,7 @@ public class RegisterUserInfoDialog {
                 driverLicenseButton.setBackgroundColor(Color.rgb(39, 0, 85));
                 Intent intent = new Intent(context, RegisterDriverLicenseActivity.class);
                 context.startActivity(intent);
+                ((Activity)context).finish();
                 dlg.dismiss();
             }
         });
@@ -42,6 +44,7 @@ public class RegisterUserInfoDialog {
                 registrationCardButton.setBackgroundColor(Color.rgb(39, 0, 85));
                 Intent intent = new Intent(context, RegisterRegistrationActivity.class);
                 context.startActivity(intent);
+                ((Activity)context).finish();
                 dlg.dismiss();
             }
         });

@@ -36,7 +36,8 @@ public class ReadQrCodeActivity extends AppCompatActivity {
 
         if (result != null) {
             if (result.getContents() == null) {
-                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
                 finish();
             } else {
                 scanQrCode();

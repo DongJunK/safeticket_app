@@ -20,16 +20,19 @@
             android:background="@android:color/transparent"
             android:focusableInTouchMode="true"
             android:src="@drawable/back_button" />
-
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
         <TextView
             android:id="@+id/findIdPwdText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="240dp"
+            android:layout_marginRight="20dp"
             android:layout_marginTop="36dp"
             android:text="비밀번호 찾기"
             android:textColor="#1f2021"
-            android:textSize="15sp"/>
+            android:textSize="15sp" />
     </LinearLayout>
 
     <ScrollView
@@ -132,8 +135,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="130dp"
+                android:layout_marginTop="110dp"
                 android:layout_marginRight="20dp"
+
                 android:background="@drawable/button_purple"
                 android:gravity="center_horizontal|center_vertical"
                 android:lineSpacingExtra="0sp"
