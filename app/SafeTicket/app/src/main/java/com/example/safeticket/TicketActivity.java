@@ -121,7 +121,7 @@ public class TicketActivity extends AppCompatActivity {
         JSONObject qrcode_obj = new JSONObject();
         try {
             qrcode_obj.put("email",email);
-            qrcode_obj.put("ticketCode",ticketCode);
+            qrcode_obj.put("ticket_code",ticketCode);
         } catch (JSONException e) {
             e.printStackTrace();
         }

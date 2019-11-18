@@ -143,7 +143,7 @@ public class ReadQrCodeActivity extends AppCompatActivity {
         } catch (Exception e) {
             System.out.println(e.toString());
         }
-        System.out.println("anstjaos"+result.toString());
+        Log.i("saficket","anstjaos "+result.toString());
         return result;
     }
 
@@ -151,7 +151,6 @@ public class ReadQrCodeActivity extends AppCompatActivity {
     boolean whetherEnrollOrScan(JSONObject qrCode) {
         boolean check = true;
         String ticket_code = null;
-
         try {
             ticket_code = qrCode.getString("ticket_code");
         } catch (JSONException e) {
@@ -161,7 +160,7 @@ public class ReadQrCodeActivity extends AppCompatActivity {
         if(ticket_code==null){
             check = false;
         }
-
+        Log.e("safi",String.valueOf(check)+" "+ticket_code);
         return check;
     }
 }
