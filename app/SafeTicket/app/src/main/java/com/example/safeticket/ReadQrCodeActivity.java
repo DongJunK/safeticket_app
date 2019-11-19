@@ -19,12 +19,15 @@ import org.json.JSONObject;
 public class ReadQrCodeActivity extends AppCompatActivity {
     private IntentIntegrator qrScan;
     IntentResult result;
+    String loginId;
+    SharedPreferences loginInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_readqrcode);
         qrScan = new IntentIntegrator(this);
+        loginId = loginInfo.getString("email","");
         qrScan.setOrientationLocked(false); // default가 세로모드인데 휴대폰 방향에 따라 가로, 세로로 자동 변경됩니다.
         qrScan.setPrompt("티켓 QrCode를 찍어주세요!");
         qrScan.initiateScan();
@@ -92,7 +95,6 @@ public class ReadQrCodeActivity extends AppCompatActivity {
         JSONObject req_json = new JSONObject(); // 요청 json
         boolean result = false; // 요청 결과 값
 
-
         try {
             req_json.put("authorization", ticketInfo.getString("token"));
             req_json.put("attendee_id", ticketInfo.getString("email"));
@@ -102,6 +104,9 @@ public class ReadQrCodeActivity extends AppCompatActivity {
             req_json.put("event_time", ticketInfo.getString("event_time"));
             req_json.put("ticket_issuer", ticketInfo.getString("ticket_issuer"));
             req_json.put("payment_time", ticketInfo.getString("payment_time"));
+            if(!ticketInfo.getString("email").equals(loginId)){
+                return result;
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -28,7 +28,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private BackPressCloseHandler bpcHandler;
-    private String attendeeId = "owen1994";
+    private String attendeeId;
     private ArrayList<UserInfo> userInfoList = new ArrayList<UserInfo>();
     private ArrayList<Ticket> ticketList = new ArrayList<Ticket>();
     private Animation fab_open, fab_close;
