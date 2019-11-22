@@ -27,6 +27,7 @@ public class ReadQrCodeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_readqrcode);
         qrScan = new IntentIntegrator(this);
+        loginInfo = getSharedPreferences("loginInfo",MODE_PRIVATE);
         loginId = loginInfo.getString("email","");
         qrScan.setOrientationLocked(false); // default가 세로모드인데 휴대폰 방향에 따라 가로, 세로로 자동 변경됩니다.
         qrScan.setPrompt("티켓 QrCode를 찍어주세요!");
